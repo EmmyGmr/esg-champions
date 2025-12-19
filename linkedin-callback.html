@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authenticating... | ESG Champions</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    
+    <style>
+        .callback-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary-50) 0%, white 100%);
+            padding: var(--space-6);
+        }
+        .callback-card {
+            text-align: center;
+            padding: var(--space-10);
+            background: white;
+            border-radius: var(--radius-2xl);
+            box-shadow: var(--shadow-xl);
+            max-width: 400px;
+        }
+        .callback-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto var(--space-6);
+            background: var(--primary-100);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-600);
+        }
+        .callback-error {
+            color: var(--error);
+        }
+    </style>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+</head>
+<body>
+    <div class="callback-container">
+        <div class="callback-card" id="loading-state">
+            <div class="callback-icon">
+                <div class="loading-spinner"></div>
+            </div>
+            <h2>Completing Sign In</h2>
+            <p class="text-secondary">Please wait while we verify your credentials...</p>
+        </div>
+
+        <div class="callback-card hidden" id="error-state">
+            <div class="callback-icon" style="background: var(--error-bg); color: var(--error);">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="15" y1="9" x2="9" y2="15"></line>
+                    <line x1="9" y1="9" x2="15" y2="15"></line>
+                </svg>
+            </div>
+            <h2>Authentication Failed</h2>
+            <p class="text-secondary" id="error-message">Something went wrong during sign in.</p>
+            <a href="/champion-login.html" class="btn btn-primary mt-6">Try Again</a>
+        </div>
+
+        <div class="callback-card hidden" id="success-state">
+            <div class="callback-icon" style="background: var(--success-bg); color: var(--success);">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            </div>
+            <h2>Sign In Successful</h2>
+            <p class="text-secondary">Redirecting to your dashboard...</p>
+        </div>
+    </div>
+
+    <script src="supabase-service.js"></script>
+    <script src="champion-auth-supabase.js"></script>
+    
+    <script>
+        async function handleCallback() {
+            const loadingState = document.getElementById('loading-state');
+            const errorState = document.getElementById('error-state');
+            const successState = document.getElementById('success-state');
+            const errorMessage = document.getElementById('error-message');
+
+            try {
+                // Wait for auth to initialize
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // Initialize auth and check for session
+                await window.championAuth.init();
+                
+                // Check if we have a session
+                const session = await window.supabaseService.getSession();
+                
+                if (session) {
+                    // Load or create profile
+                    await window.championAuth.loadChampionProfile();
+                    
+                    // Show success
+                    loadingState.classList.add('hidden');
+                    successState.classList.remove('hidden');
+                    
+                    // Redirect to dashboard
+                    setTimeout(() => {
+                        window.location.href = '/champion-dashboard.html';
+                    }, 1500);
+                } else {
+                    throw new Error('No session found. Please try signing in again.');
+                }
+            } catch (error) {
+                console.error('Callback error:', error);
+                
+                loadingState.classList.add('hidden');
+                errorState.classList.remove('hidden');
+                errorMessage.textContent = error.message || 'Authentication failed. Please try again.';
+            }
+        }
+
+        // Handle the OAuth callback
+        document.addEventListener('DOMContentLoaded', handleCallback);
+    </script>
+</body>
+</html>
+

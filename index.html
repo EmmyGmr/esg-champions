@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ESG Champions Platform - Join the sustainability movement. Validate ESG indicators and earn recognition for your contributions.">
+    <meta name="keywords" content="ESG, sustainability, champions, environmental, social, governance, STIF">
+    <title>ESG Champions | STIF - Sustainability Technology and Innovation Forum</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="/" class="logo">
+                <div class="logo-icon">ESG</div>
+                <span>Champions</span>
+            </a>
+            
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="/" class="nav-link active">Home</a></li>
+                    <li><a href="/about.html" class="nav-link">About</a></li>
+                    <li><a href="/faq.html" class="nav-link">FAQ</a></li>
+                </ul>
+            </nav>
+            
+            <div class="nav-actions">
+                <a href="/champion-login.html" class="btn btn-ghost">Login</a>
+                <a href="/champion-register.html" class="btn btn-primary">Get Started</a>
+            </div>
+            
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <button class="mobile-menu-close" aria-label="Close menu">&times;</button>
+        <ul class="mobile-nav-menu">
+            <li><a href="/" class="mobile-nav-link">Home</a></li>
+            <li><a href="/about.html" class="mobile-nav-link">About</a></li>
+            <li><a href="/faq.html" class="mobile-nav-link">FAQ</a></li>
+            <li><a href="/champion-login.html" class="mobile-nav-link">Login</a></li>
+            <li><a href="/champion-register.html" class="mobile-nav-link">Register</a></li>
+        </ul>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title animate-fade-in">
+                    Become an <span class="text-gradient">ESG Champion</span>
+                </h1>
+                <p class="hero-subtitle animate-fade-in" style="animation-delay: 0.2s">
+                    Join a global community of sustainability experts. Validate ESG indicators, 
+                    share your expertise, and earn recognition for driving positive change.
+                </p>
+                <div class="hero-actions animate-fade-in" style="animation-delay: 0.4s">
+                    <a href="/champion-register.html" class="btn btn-primary btn-lg">
+                        Start Your Journey
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </a>
+                    <a href="/about.html" class="btn btn-secondary btn-lg">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="section" style="padding-top: 0; margin-top: -60px; position: relative; z-index: 10;">
+        <div class="container">
+            <div class="stats-grid stagger">
+                <div class="stat-card card-glass">
+                    <div class="stat-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                    <div class="stat-value">1,500+</div>
+                    <div class="stat-label">Active Champions</div>
+                </div>
+                <div class="stat-card card-glass">
+                    <div class="stat-icon" style="background: var(--environmental-bg); color: var(--environmental);">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                    </div>
+                    <div class="stat-value">14</div>
+                    <div class="stat-label">ESG Panels</div>
+                </div>
+                <div class="stat-card card-glass">
+                    <div class="stat-icon" style="background: var(--social-bg); color: var(--social);">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                        </svg>
+                    </div>
+                    <div class="stat-value">50+</div>
+                    <div class="stat-label">ESG Indicators</div>
+                </div>
+                <div class="stat-card card-glass">
+                    <div class="stat-icon" style="background: var(--governance-bg); color: var(--governance);">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                    </div>
+                    <div class="stat-value">10K+</div>
+                    <div class="stat-label">Reviews Submitted</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ESG Categories Section -->
+    <section class="section">
+        <div class="container">
+            <div class="text-center mb-8">
+                <h2>Three Pillars of Sustainability</h2>
+                <p class="text-secondary" style="max-width: 600px; margin: var(--space-4) auto 0;">
+                    Explore comprehensive ESG indicators across Environmental, Social, and Governance dimensions.
+                </p>
+            </div>
+            
+            <div class="features-grid stagger">
+                <!-- Environmental -->
+                <div class="panel-card environmental">
+                    <div class="feature-icon" style="background: var(--environmental-bg); color: var(--environmental);">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22c4-4 8-7.5 8-12a8 8 0 1 0-16 0c0 4.5 4 8 8 12z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                    </div>
+                    <span class="badge badge-environmental">Environmental</span>
+                    <h3 class="feature-title mt-4">Climate & Environment</h3>
+                    <p class="feature-description">
+                        Climate action, energy management, water stewardship, waste reduction, 
+                        and biodiversity protection indicators.
+                    </p>
+                    <a href="/champion-panels.html?category=environmental" class="btn btn-secondary mt-4">
+                        Explore Panels
+                    </a>
+                </div>
+
+                <!-- Social -->
+                <div class="panel-card social">
+                    <div class="feature-icon" style="background: var(--social-bg); color: var(--social);">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                    <span class="badge badge-social">Social</span>
+                    <h3 class="feature-title mt-4">People & Community</h3>
+                    <p class="feature-description">
+                        Human rights, labor practices, health & safety, diversity & inclusion, 
+                        and community engagement indicators.
+                    </p>
+                    <a href="/champion-panels.html?category=social" class="btn btn-secondary mt-4">
+                        Explore Panels
+                    </a>
+                </div>
+
+                <!-- Governance -->
+                <div class="panel-card governance">
+                    <div class="feature-icon" style="background: var(--governance-bg); color: var(--governance);">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 21h18"></path>
+                            <path d="M3 10h18"></path>
+                            <path d="M5 6l7-3 7 3"></path>
+                            <path d="M4 10v11"></path>
+                            <path d="M20 10v11"></path>
+                            <path d="M8 14v3"></path>
+                            <path d="M12 14v3"></path>
+                            <path d="M16 14v3"></path>
+                        </svg>
+                    </div>
+                    <span class="badge badge-governance">Governance</span>
+                    <h3 class="feature-title mt-4">Ethics & Leadership</h3>
+                    <p class="feature-description">
+                        Corporate governance, ethics & compliance, risk management, 
+                        and transparency & reporting indicators.
+                    </p>
+                    <a href="/champion-panels.html?category=governance" class="btn btn-secondary mt-4">
+                        Explore Panels
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="section" style="background: white;">
+        <div class="container">
+            <div class="text-center mb-8">
+                <h2>How It Works</h2>
+                <p class="text-secondary" style="max-width: 600px; margin: var(--space-4) auto 0;">
+                    Join our community and start making an impact in just a few simple steps.
+                </p>
+            </div>
+
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-8);">
+                <div class="text-center">
+                    <div class="stat-icon" style="width: 80px; height: 80px; margin: 0 auto var(--space-6); font-size: var(--text-2xl);">
+                        <span style="background: linear-gradient(135deg, var(--primary-500), var(--primary-600)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">1</span>
+                    </div>
+                    <h4>Register</h4>
+                    <p class="text-secondary">Create your free account and join our global community of ESG experts.</p>
+                </div>
+                <div class="text-center">
+                    <div class="stat-icon" style="width: 80px; height: 80px; margin: 0 auto var(--space-6); font-size: var(--text-2xl);">
+                        <span style="background: linear-gradient(135deg, var(--primary-500), var(--primary-600)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">2</span>
+                    </div>
+                    <h4>Select Panels</h4>
+                    <p class="text-secondary">Choose ESG panels that match your expertise and interests.</p>
+                </div>
+                <div class="text-center">
+                    <div class="stat-icon" style="width: 80px; height: 80px; margin: 0 auto var(--space-6); font-size: var(--text-2xl);">
+                        <span style="background: linear-gradient(135deg, var(--primary-500), var(--primary-600)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">3</span>
+                    </div>
+                    <h4>Validate Indicators</h4>
+                    <p class="text-secondary">Review and validate ESG indicators with your expert knowledge.</p>
+                </div>
+                <div class="text-center">
+                    <div class="stat-icon" style="width: 80px; height: 80px; margin: 0 auto var(--space-6); font-size: var(--text-2xl);">
+                        <span style="background: linear-gradient(135deg, var(--primary-500), var(--primary-600)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">4</span>
+                    </div>
+                    <h4>Earn Credits</h4>
+                    <p class="text-secondary">Get recognized for your contributions and climb the leaderboard.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="section" style="background: linear-gradient(135deg, var(--primary-700) 0%, var(--primary-800) 100%);">
+        <div class="container text-center">
+            <h2 style="color: white; margin-bottom: var(--space-4);">Ready to Make an Impact?</h2>
+            <p style="color: var(--primary-200); max-width: 500px; margin: 0 auto var(--space-8);">
+                Join thousands of sustainability experts contributing to a more transparent and accountable future.
+            </p>
+            <a href="/champion-register.html" class="btn btn-accent btn-lg">
+                Become a Champion Today
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="/" class="logo">
+                        <div class="logo-icon">ESG</div>
+                        <span>Champions</span>
+                    </a>
+                    <p class="footer-description">
+                        Empowering sustainability experts to validate and improve ESG practices worldwide.
+                    </p>
+                    <div class="footer-social">
+                        <a href="#" aria-label="LinkedIn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                                <rect x="2" y="9" width="4" height="12"></rect>
+                                <circle cx="4" cy="4" r="2"></circle>
+                            </svg>
+                        </a>
+                        <a href="#" aria-label="Twitter">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h6 class="footer-title">Platform</h6>
+                    <ul class="footer-links">
+                        <li><a href="/about.html" class="footer-link">About Us</a></li>
+                        <li><a href="/champion-panels.html" class="footer-link">ESG Panels</a></li>
+                        <li><a href="/ranking.html" class="footer-link">Leaderboard</a></li>
+                        <li><a href="/faq.html" class="footer-link">FAQ</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h6 class="footer-title">Resources</h6>
+                    <ul class="footer-links">
+                        <li><a href="/QUICK_SETUP.html" class="footer-link">Quick Setup</a></li>
+                        <li><a href="/SETUP_GUIDE.html" class="footer-link">Setup Guide</a></li>
+                        <li><a href="/contributor-agreements.html" class="footer-link">Contributor Agreements</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h6 class="footer-title">Legal</h6>
+                    <ul class="footer-links">
+                        <li><a href="/privacy.html" class="footer-link">Privacy Policy</a></li>
+                        <li><a href="/cookie-policy.html" class="footer-link">Cookie Policy</a></li>
+                        <li><a href="/terms.html" class="footer-link">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 STIF - Sustainability Technology and Innovation Forum. All rights reserved.</p>
+                <p>Built with purpose for a sustainable future.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="supabase-service.js"></script>
+    <script src="champion-auth-supabase.js"></script>
+    <script src="champion-db-supabase.js"></script>
+    <script src="dynamic-navigation.js"></script>
+    <script src="mobile-menu.js"></script>
+    <script src="logout.js"></script>
+</body>
+</html>
+

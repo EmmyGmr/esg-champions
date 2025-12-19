@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Terms of Service for ESG Champions Platform">
+    <title>Terms of Service | ESG Champions</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    
+    <style>
+        .policy-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .policy-content h2 {
+            margin-top: var(--space-10);
+            margin-bottom: var(--space-4);
+            font-size: var(--text-2xl);
+        }
+        .policy-content p, .policy-content li {
+            color: var(--gray-600);
+            line-height: 1.8;
+        }
+        .policy-content ul {
+            margin-left: var(--space-6);
+            margin-bottom: var(--space-4);
+        }
+        .policy-content li {
+            margin-bottom: var(--space-2);
+        }
+        .last-updated {
+            color: var(--gray-500);
+            font-size: var(--text-sm);
+            margin-bottom: var(--space-8);
+        }
+    </style>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="/" class="logo">
+                <div class="logo-icon">ESG</div>
+                <span>Champions</span>
+            </a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="/" class="nav-link">Home</a></li>
+                    <li><a href="/about.html" class="nav-link">About</a></li>
+                    <li><a href="/faq.html" class="nav-link">FAQ</a></li>
+                </ul>
+            </nav>
+            <div class="nav-actions">
+                <a href="/champion-login.html" class="btn btn-ghost">Login</a>
+                <a href="/champion-register.html" class="btn btn-primary">Get Started</a>
+            </div>
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Content -->
+    <section class="section" style="padding-top: 140px;">
+        <div class="container">
+            <div class="policy-content">
+                <h1>Terms of Service</h1>
+                <p class="last-updated">Last updated: December 2024</p>
+
+                <p>Welcome to ESG Champions. These Terms of Service ("Terms") govern your use of the ESG Champions Platform operated by STIF (Sustainability Technology and Innovation Forum). By accessing or using our platform, you agree to be bound by these Terms.</p>
+
+                <h2>1. Acceptance of Terms</h2>
+                <p>By registering for an account or using the ESG Champions Platform, you acknowledge that you have read, understood, and agree to be bound by these Terms. If you do not agree, please do not use the platform.</p>
+
+                <h2>2. Eligibility</h2>
+                <p>To use the platform, you must:</p>
+                <ul>
+                    <li>Be at least 16 years of age</li>
+                    <li>Have the legal capacity to enter into these Terms</li>
+                    <li>Not be prohibited from using the service under applicable laws</li>
+                    <li>Provide accurate registration information</li>
+                </ul>
+
+                <h2>3. Account Registration</h2>
+                <p>When you create an account, you agree to:</p>
+                <ul>
+                    <li>Provide accurate, current, and complete information</li>
+                    <li>Maintain the security of your password and account</li>
+                    <li>Notify us immediately of any unauthorized access</li>
+                    <li>Be responsible for all activities under your account</li>
+                </ul>
+
+                <h2>4. User Conduct</h2>
+                <p>You agree not to:</p>
+                <ul>
+                    <li>Submit false, misleading, or fraudulent content</li>
+                    <li>Impersonate any person or entity</li>
+                    <li>Harass, abuse, or harm other users</li>
+                    <li>Manipulate ratings, votes, or rankings</li>
+                    <li>Use automated systems to access the platform without permission</li>
+                    <li>Violate any applicable laws or regulations</li>
+                    <li>Infringe on intellectual property rights</li>
+                    <li>Attempt to gain unauthorized access to systems</li>
+                </ul>
+
+                <h2>5. User Content</h2>
+                <p>By submitting content (reviews, comments, votes), you:</p>
+                <ul>
+                    <li>Retain ownership of your original content</li>
+                    <li>Grant us a license to use, display, and distribute your content as described in the Contributor License Agreement</li>
+                    <li>Represent that you have the right to submit such content</li>
+                    <li>Understand that your contributions may be visible to other users</li>
+                </ul>
+
+                <h2>6. Credits and Rankings</h2>
+                <p>Our credit and ranking system is subject to:</p>
+                <ul>
+                    <li>Modification at our discretion</li>
+                    <li>Correction of errors or manipulation</li>
+                    <li>No monetary value or transferability</li>
+                </ul>
+
+                <h2>7. Intellectual Property</h2>
+                <p>The ESG Champions Platform, including its design, code, and content (excluding user-generated content), is owned by STIF. You may not:</p>
+                <ul>
+                    <li>Copy, modify, or distribute our proprietary content</li>
+                    <li>Use our trademarks without permission</li>
+                    <li>Reverse engineer our software</li>
+                </ul>
+
+                <h2>8. Termination</h2>
+                <p>We may suspend or terminate your account if you:</p>
+                <ul>
+                    <li>Violate these Terms</li>
+                    <li>Engage in fraudulent activity</li>
+                    <li>Harm other users or the platform</li>
+                </ul>
+                <p>You may delete your account at any time through your profile settings.</p>
+
+                <h2>9. Disclaimers</h2>
+                <p>The platform is provided "as is" without warranties of any kind. We do not guarantee:</p>
+                <ul>
+                    <li>Uninterrupted or error-free service</li>
+                    <li>Accuracy of user-submitted content</li>
+                    <li>Suitability for any particular purpose</li>
+                </ul>
+
+                <h2>10. Limitation of Liability</h2>
+                <p>To the maximum extent permitted by law, STIF shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the platform.</p>
+
+                <h2>11. Indemnification</h2>
+                <p>You agree to indemnify and hold harmless STIF from any claims, damages, or expenses arising from your use of the platform or violation of these Terms.</p>
+
+                <h2>12. Changes to Terms</h2>
+                <p>We may update these Terms from time to time. We will notify you of significant changes via email or platform notification. Continued use after changes constitutes acceptance.</p>
+
+                <h2>13. Governing Law</h2>
+                <p>These Terms shall be governed by and construed in accordance with applicable laws, without regard to conflict of law principles.</p>
+
+                <h2>14. Contact</h2>
+                <p>For questions about these Terms, contact us at:</p>
+                <p><strong>Email:</strong> legal@stif.org</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2024 STIF. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="supabase-service.js"></script>
+    <script src="champion-auth-supabase.js"></script>
+    <script src="champion-db-supabase.js"></script>
+    <script src="dynamic-navigation.js"></script>
+    <script src="mobile-menu.js"></script>
+    <script src="logout.js"></script>
+</body>
+</html>
+

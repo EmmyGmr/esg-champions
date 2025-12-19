@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Your Profile - ESG Champions Platform">
+    <title>Profile | ESG Champions</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="/" class="logo">
+                <div class="logo-icon">ESG</div>
+                <span>Champions</span>
+            </a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="/" class="nav-link">Home</a></li>
+                    <li><a href="/champion-dashboard.html" class="nav-link">Dashboard</a></li>
+                    <li><a href="/champion-panels.html" class="nav-link">Panels</a></li>
+                    <li><a href="/ranking.html" class="nav-link">Rankings</a></li>
+                </ul>
+            </nav>
+            <div class="nav-actions"></div>
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <button class="mobile-menu-close">&times;</button>
+        <ul class="mobile-nav-menu"></ul>
+    </div>
+
+    <!-- Main Content -->
+    <main style="padding-top: 100px; min-height: 100vh; background: var(--gray-50);">
+        <div class="container container-lg">
+            <!-- Loading State -->
+            <div id="loading-state" class="flex-center" style="height: 400px;">
+                <div class="loading-spinner"></div>
+            </div>
+
+            <!-- Profile Content -->
+            <div id="profile-content" class="hidden">
+                <!-- Profile Header -->
+                <div class="profile-header" id="profile-header-card">
+                    <div class="avatar avatar-xl" id="profile-avatar">?</div>
+                    <div class="profile-info">
+                        <h1 id="profile-name">Loading...</h1>
+                        <p id="profile-title" style="color: var(--primary-200); margin-bottom: var(--space-2);">-</p>
+                        <div class="profile-meta">
+                            <span id="profile-company">-</span>
+                            <span id="profile-email">-</span>
+                            <span id="profile-joined">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Stats -->
+                <div class="stats-grid mb-8">
+                    <div class="stat-card">
+                        <div class="stat-value" id="profile-credits">0</div>
+                        <div class="stat-label">STIF Credits</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="profile-reviews">0</div>
+                        <div class="stat-label">Total Reviews</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="profile-accepted">0</div>
+                        <div class="stat-label">Accepted</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="profile-rank">#--</div>
+                        <div class="stat-label">Rank</div>
+                    </div>
+                </div>
+
+                <!-- Tabs -->
+                <div class="widget">
+                    <div class="widget-header">
+                        <div class="flex" style="gap: var(--space-4);">
+                            <button class="btn btn-ghost profile-tab active" data-tab="settings">Account Settings</button>
+                            <button class="btn btn-ghost profile-tab" data-tab="reviews">My Reviews</button>
+                            <button class="btn btn-ghost profile-tab" data-tab="security">Security</button>
+                        </div>
+                    </div>
+                    <div class="widget-body">
+                        <!-- Settings Tab -->
+                        <div id="tab-settings" class="tab-content">
+                            <form id="profile-form">
+                                <div class="grid" style="grid-template-columns: 1fr 1fr; gap: var(--space-6);">
+                                    <div class="form-group">
+                                        <label class="form-label" for="full_name">Full Name</label>
+                                        <input type="text" id="full_name" class="form-input" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="email">Email</label>
+                                        <input type="email" id="email" class="form-input" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="company">Company</label>
+                                        <input type="text" id="company" class="form-input">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="job_title">Job Title</label>
+                                        <input type="text" id="job_title" class="form-input">
+                                    </div>
+                                    <div class="form-group" style="grid-column: span 2;">
+                                        <label class="form-label" for="linkedin_url">LinkedIn Profile URL</label>
+                                        <input type="url" id="linkedin_url" class="form-input" placeholder="https://linkedin.com/in/yourprofile">
+                                    </div>
+                                    <div class="form-group" style="grid-column: span 2;">
+                                        <label class="form-label" for="bio">Bio</label>
+                                        <textarea id="bio" class="form-textarea" rows="3" placeholder="Tell us about your sustainability expertise..."></textarea>
+                                    </div>
+                                </div>
+                                <div class="flex-between mt-6">
+                                    <div></div>
+                                    <button type="submit" class="btn btn-primary" id="save-profile-btn">Save Changes</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Reviews Tab -->
+                        <div id="tab-reviews" class="tab-content hidden">
+                            <div id="my-reviews-list">
+                                <p class="text-secondary text-center p-6">Loading reviews...</p>
+                            </div>
+                        </div>
+
+                        <!-- Security Tab -->
+                        <div id="tab-security" class="tab-content hidden">
+                            <h3 class="mb-6">Change Password</h3>
+                            <form id="password-form" style="max-width: 400px;">
+                                <div class="form-group">
+                                    <label class="form-label" for="new_password">New Password</label>
+                                    <input type="password" id="new_password" class="form-input" minlength="6" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="confirm_password">Confirm Password</label>
+                                    <input type="password" id="confirm_password" class="form-input" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary" id="change-password-btn">Update Password</button>
+                            </form>
+
+                            <hr style="margin: var(--space-8) 0; border: none; border-top: 1px solid var(--gray-200);">
+
+                            <h3 class="mb-4" style="color: var(--error);">Danger Zone</h3>
+                            <p class="text-secondary mb-4">Once you delete your account, there is no going back.</p>
+                            <button class="btn" style="background: var(--error-bg); color: var(--error); border: 1px solid var(--error);" id="delete-account-btn">
+                                Delete Account
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2024 STIF. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="supabase-service.js"></script>
+    <script src="champion-auth-supabase.js"></script>
+    <script src="champion-db-supabase.js"></script>
+    <script src="dynamic-navigation.js"></script>
+    <script src="mobile-menu.js"></script>
+    <script src="logout.js"></script>
+    <script src="champion-profile.js"></script>
+</body>
+</html>
+

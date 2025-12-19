@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Champion Dashboard - ESG Champions Platform">
+    <title>Dashboard | ESG Champions</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="/" class="logo">
+                <div class="logo-icon">ESG</div>
+                <span>Champions</span>
+            </a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="/" class="nav-link">Home</a></li>
+                    <li><a href="/champion-dashboard.html" class="nav-link active">Dashboard</a></li>
+                    <li><a href="/champion-panels.html" class="nav-link">Panels</a></li>
+                    <li><a href="/ranking.html" class="nav-link">Rankings</a></li>
+                </ul>
+            </nav>
+            <div class="nav-actions"></div>
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <button class="mobile-menu-close">&times;</button>
+        <ul class="mobile-nav-menu"></ul>
+    </div>
+
+    <!-- Main Content -->
+    <main class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <nav>
+                <ul class="sidebar-nav">
+                    <li>
+                        <a href="/champion-dashboard.html" class="sidebar-link active">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="14" width="7" height="7"></rect>
+                                <rect x="3" y="14" width="7" height="7"></rect>
+                            </svg>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/champion-panels.html" class="sidebar-link">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                                <path d="M2 17l10 5 10-5"></path>
+                                <path d="M2 12l10 5 10-5"></path>
+                            </svg>
+                            ESG Panels
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/ranking.html" class="sidebar-link">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M8 6h13"></path>
+                                <path d="M8 12h13"></path>
+                                <path d="M8 18h13"></path>
+                                <path d="M3 6h.01"></path>
+                                <path d="M3 12h.01"></path>
+                                <path d="M3 18h.01"></path>
+                            </svg>
+                            Rankings
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/champion-profile.html" class="sidebar-link">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            Profile
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Dashboard Content -->
+        <div class="main-content">
+            <!-- Loading State -->
+            <div id="loading-state" class="flex-center" style="height: 400px;">
+                <div class="loading-spinner"></div>
+            </div>
+
+            <!-- Dashboard Content (hidden until loaded) -->
+            <div id="dashboard-content" class="hidden">
+                <!-- Welcome Header -->
+                <div class="flex-between mb-8">
+                    <div>
+                        <h1 id="welcome-title">Welcome back!</h1>
+                        <p class="text-secondary">Here's your sustainability impact overview</p>
+                    </div>
+                    <a href="/champion-panels.html" class="btn btn-primary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Submit Review
+                    </a>
+                </div>
+
+                <!-- Resume Progress Card -->
+                <div id="resume-card" class="widget hidden" style="background: linear-gradient(135deg, var(--primary-600), var(--primary-700)); color: white; margin-bottom: var(--space-6);">
+                    <div class="widget-body">
+                        <div class="flex-between">
+                            <div>
+                                <h3 style="color: white; margin-bottom: var(--space-2);">Continue Where You Left Off</h3>
+                                <p style="color: var(--primary-100); margin-bottom: 0;" id="resume-description"></p>
+                            </div>
+                            <a href="#" id="resume-link" class="btn btn-accent">Continue</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="stats-grid mb-8" id="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                            </svg>
+                        </div>
+                        <div class="stat-value" id="stat-credits">0</div>
+                        <div class="stat-label">STIF Credits</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: var(--success-bg); color: var(--success);">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
+                        <div class="stat-value" id="stat-approved">0</div>
+                        <div class="stat-label">Approved Reviews</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: var(--warning-bg); color: var(--warning);">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+                        <div class="stat-value" id="stat-pending">0</div>
+                        <div class="stat-label">Pending Reviews</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: var(--social-bg); color: var(--social);">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 20V10"></path>
+                                <path d="M12 20V4"></path>
+                                <path d="M6 20v-6"></path>
+                            </svg>
+                        </div>
+                        <div class="stat-value" id="stat-rank">#--</div>
+                        <div class="stat-label">Your Rank</div>
+                    </div>
+                </div>
+
+                <!-- Content Grid -->
+                <div class="grid" style="grid-template-columns: 2fr 1fr; gap: var(--space-6);">
+                    <!-- Recent Reviews -->
+                    <div class="widget">
+                        <div class="widget-header">
+                            <h3 class="widget-title">Recent Reviews</h3>
+                            <a href="/champion-panels.html" class="btn btn-ghost btn-sm">View All</a>
+                        </div>
+                        <div class="widget-body">
+                            <div id="recent-reviews-list">
+                                <p class="text-secondary text-center p-6">No reviews yet. Start by exploring ESG panels!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div>
+                        <div class="widget">
+                            <div class="widget-header">
+                                <h3 class="widget-title">Quick Actions</h3>
+                            </div>
+                            <div class="widget-body">
+                                <a href="/champion-panels.html" class="sidebar-link mb-2" style="display: flex;">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                                        <path d="M2 17l10 5 10-5"></path>
+                                        <path d="M2 12l10 5 10-5"></path>
+                                    </svg>
+                                    Browse Panels
+                                </a>
+                                <a href="/ranking.html" class="sidebar-link mb-2" style="display: flex;">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 20v-6"></path>
+                                        <path d="M6 20V4"></path>
+                                        <path d="M18 20V10"></path>
+                                    </svg>
+                                    View Leaderboard
+                                </a>
+                                <a href="/champion-profile.html" class="sidebar-link" style="display: flex;">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                                    </svg>
+                                    Account Settings
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- STIF Score Card -->
+                        <div class="widget mt-6">
+                            <div class="widget-header">
+                                <h3 class="widget-title">STIF Score</h3>
+                            </div>
+                            <div class="widget-body text-center">
+                                <div class="stat-value text-gradient" style="font-size: var(--text-5xl);" id="stif-score">0</div>
+                                <p class="text-secondary mt-2">Your sustainability impact score</p>
+                                <button class="btn btn-secondary btn-sm mt-4" id="score-info-btn">
+                                    How it's calculated
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Score Info Modal -->
+    <div class="modal-backdrop" id="score-modal-backdrop">
+        <div class="modal" id="score-modal">
+            <div class="modal-header">
+                <h3 class="modal-title">STIF Score Breakdown</h3>
+                <button class="modal-close" id="score-modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="text-secondary mb-4">Your STIF Score is calculated based on your contributions to the platform:</p>
+                
+                <div class="mb-4">
+                    <div class="flex-between mb-2">
+                        <span class="font-semibold">Approved Reviews</span>
+                        <span id="breakdown-reviews">0 credits</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-reviews" style="width: 0%;"></div>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <div class="flex-between mb-2">
+                        <span class="font-semibold">Community Votes</span>
+                        <span id="breakdown-votes">0 credits</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-votes" style="width: 0%; background: var(--social);"></div>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <div class="flex-between mb-2">
+                        <span class="font-semibold">Participation Bonus</span>
+                        <span id="breakdown-participation">0 credits</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-participation" style="width: 0%; background: var(--governance);"></div>
+                    </div>
+                </div>
+                
+                <div class="alert alert-info mt-6">
+                    <strong>Tip:</strong> Submit quality reviews and engage with the community to increase your score!
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="supabase-service.js"></script>
+    <script src="champion-auth-supabase.js"></script>
+    <script src="champion-db-supabase.js"></script>
+    <script src="dynamic-navigation.js"></script>
+    <script src="mobile-menu.js"></script>
+    <script src="logout.js"></script>
+    <script src="champion-dashboard.js"></script>
+</body>
+</html>
+

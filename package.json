@@ -1,0 +1,26 @@
+{
+  "name": "esg-champions",
+  "version": "1.0.0",
+  "description": "ESG Champions Platform - STIF Sustainability Technology and Innovation Forum",
+  "main": "build.js",
+  "scripts": {
+    "dev": "npx serve . -p 8000",
+    "build": "node build.js",
+    "deploy": "vercel --prod"
+  },
+  "keywords": [
+    "esg",
+    "sustainability",
+    "champions",
+    "stif"
+  ],
+  "author": "STIF",
+  "license": "MIT",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0"
+  },
+  "devDependencies": {
+    "serve": "^14.2.1"
+  }
+}
+

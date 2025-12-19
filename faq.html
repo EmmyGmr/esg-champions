@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Frequently asked questions about the ESG Champions Platform.">
+    <title>FAQ | ESG Champions</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    
+    <style>
+        .faq-section {
+            margin-bottom: var(--space-8);
+        }
+        .faq-item {
+            background: white;
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--space-4);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        .faq-question {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-5) var(--space-6);
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--gray-800);
+            transition: all var(--transition);
+        }
+        .faq-question:hover {
+            background: var(--gray-50);
+        }
+        .faq-question svg {
+            transition: transform var(--transition);
+            flex-shrink: 0;
+            margin-left: var(--space-4);
+        }
+        .faq-item.active .faq-question svg {
+            transform: rotate(180deg);
+        }
+        .faq-answer {
+            padding: 0 var(--space-6);
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .faq-item.active .faq-answer {
+            padding: 0 var(--space-6) var(--space-5);
+            max-height: 500px;
+        }
+        .faq-answer p {
+            color: var(--gray-600);
+            line-height: 1.7;
+        }
+    </style>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="/" class="logo">
+                <div class="logo-icon">ESG</div>
+                <span>Champions</span>
+            </a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="/" class="nav-link">Home</a></li>
+                    <li><a href="/about.html" class="nav-link">About</a></li>
+                    <li><a href="/faq.html" class="nav-link active">FAQ</a></li>
+                </ul>
+            </nav>
+            <div class="nav-actions">
+                <a href="/champion-login.html" class="btn btn-ghost">Login</a>
+                <a href="/champion-register.html" class="btn btn-primary">Get Started</a>
+            </div>
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <button class="mobile-menu-close">&times;</button>
+        <ul class="mobile-nav-menu">
+            <li><a href="/" class="mobile-nav-link">Home</a></li>
+            <li><a href="/about.html" class="mobile-nav-link">About</a></li>
+            <li><a href="/faq.html" class="mobile-nav-link">FAQ</a></li>
+            <li><a href="/champion-login.html" class="mobile-nav-link">Login</a></li>
+            <li><a href="/champion-register.html" class="mobile-nav-link">Register</a></li>
+        </ul>
+    </div>
+
+    <!-- Hero -->
+    <section class="section" style="padding-top: 140px; background: linear-gradient(135deg, var(--primary-50) 0%, white 100%);">
+        <div class="container text-center">
+            <h1>Frequently Asked Questions</h1>
+            <p class="text-secondary" style="max-width: 600px; margin: var(--space-4) auto;">
+                Find answers to common questions about the ESG Champions Platform.
+            </p>
+        </div>
+    </section>
+
+    <!-- FAQ Content -->
+    <section class="section">
+        <div class="container container-md">
+            <!-- General -->
+            <div class="faq-section">
+                <h3 class="mb-6">General Questions</h3>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        What is the ESG Champions Platform?
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p>The ESG Champions Platform is a collaborative community where sustainability experts can validate, review, and improve ESG (Environmental, Social, and Governance) indicators. Champions contribute their expertise to ensure accurate and meaningful sustainability metrics.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Who can become an ESG Champion?
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Anyone with expertise or interest in sustainability, ESG practices, or related fields can join. We welcome professionals from diverse backgrounds including corporate sustainability, consulting, research, finance, and non-profit sectors.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Is the platform free to use?
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, registration and participation on the ESG Champions Platform is completely free. We believe in open access to sustainability knowledge and encourage broad participation.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Participation -->
+            <div class="faq-section">
+                <h3 class="mb-6">Participation & Reviews</h3>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How do I submit a review?
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p>After logging in, navigate to the Panels section, select a panel that matches your expertise, choose an indicator, and click "Submit Review." Provide your detailed analysis and rating, then submit for review by our moderators.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How are reviews evaluated?
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Reviews are evaluated by our admin team based on quality, accuracy, and relevance. Approved reviews earn credits, and high-quality contributions may receive additional recognition. Community members can also upvote helpful reviews.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        What are ESG Panels?
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p>ESG Panels are thematic categories covering different aspects of Environmental, Social, and Governance practices. Examples include Climate Action, Human Rights, and Corporate Governance. Each panel contains specific indicators that Champions can review.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Credits & Ranking -->
+            <div class="faq-section">
+                <h3 class="mb-6">Credits & Rankings</h3>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How do credits work?
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Credits are awarded when your reviews are approved by moderators. The standard award is 10 credits per accepted review. Additional credits can be earned through community engagement such as receiving upvotes on your contributions.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        What is the STIF Score?
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Your STIF Score is a composite metric that reflects your overall contribution to the platform. It includes credits from approved reviews, community engagement (votes received), and participation frequency. Higher scores improve your ranking on the leaderboard.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How does the leaderboard work?
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p>The leaderboard ranks Champions based on their total credits. We feature both all-time rankings and periodic rankings (weekly, monthly) to recognize consistent contributors. Top Champions may receive special recognition and badges.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Technical -->
+            <div class="faq-section">
+                <h3 class="mb-6">Technical Questions</h3>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Can I use LinkedIn to sign in?
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, you can sign in with your LinkedIn account for a seamless experience. This also helps verify your professional credentials and makes it easier to connect with other sustainability professionals on the platform.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Is my data secure?
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We take data security seriously. The platform uses industry-standard encryption, secure authentication via Supabase, and follows best practices for data protection. Please review our Privacy Policy for detailed information.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section" style="background: var(--primary-50);">
+        <div class="container text-center">
+            <h2>Still have questions?</h2>
+            <p class="text-secondary mb-6">Contact us or join our community to learn more.</p>
+            <a href="/champion-register.html" class="btn btn-primary btn-lg">Get Started</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2024 STIF. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="supabase-service.js"></script>
+    <script src="champion-auth-supabase.js"></script>
+    <script src="champion-db-supabase.js"></script>
+    <script src="dynamic-navigation.js"></script>
+    <script src="mobile-menu.js"></script>
+    <script src="logout.js"></script>
+    
+    <script>
+        // FAQ Toggle
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const item = question.parentElement;
+                const wasActive = item.classList.contains('active');
+                
+                // Close all
+                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+                
+                // Open clicked if not already open
+                if (!wasActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

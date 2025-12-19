@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn about ESG Champions Platform and our mission to promote sustainability through expert validation.">
+    <title>About Us | ESG Champions</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="/" class="logo">
+                <div class="logo-icon">ESG</div>
+                <span>Champions</span>
+            </a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="/" class="nav-link">Home</a></li>
+                    <li><a href="/about.html" class="nav-link active">About</a></li>
+                    <li><a href="/faq.html" class="nav-link">FAQ</a></li>
+                </ul>
+            </nav>
+            <div class="nav-actions">
+                <a href="/champion-login.html" class="btn btn-ghost">Login</a>
+                <a href="/champion-register.html" class="btn btn-primary">Get Started</a>
+            </div>
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <button class="mobile-menu-close">&times;</button>
+        <ul class="mobile-nav-menu">
+            <li><a href="/" class="mobile-nav-link">Home</a></li>
+            <li><a href="/about.html" class="mobile-nav-link">About</a></li>
+            <li><a href="/faq.html" class="mobile-nav-link">FAQ</a></li>
+            <li><a href="/champion-login.html" class="mobile-nav-link">Login</a></li>
+            <li><a href="/champion-register.html" class="mobile-nav-link">Register</a></li>
+        </ul>
+    </div>
+
+    <!-- Hero -->
+    <section class="section" style="padding-top: 140px; background: linear-gradient(135deg, var(--primary-50) 0%, white 100%);">
+        <div class="container">
+            <div class="text-center" style="max-width: 800px; margin: 0 auto;">
+                <span class="badge badge-primary mb-4">About STIF</span>
+                <h1 class="animate-fade-in">Sustainability Technology and Innovation Forum</h1>
+                <p class="hero-subtitle text-center" style="margin: var(--space-6) auto;">
+                    We're building a global community of sustainability experts dedicated to validating 
+                    and improving ESG practices across industries.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="section">
+        <div class="container">
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: var(--space-12); align-items: center;">
+                <div>
+                    <span class="badge badge-environmental">Our Mission</span>
+                    <h2 class="mt-4">Driving Sustainable Change Through Expertise</h2>
+                    <p class="text-secondary">
+                        The ESG Champions Platform was created to harness the collective expertise of 
+                        sustainability professionals worldwide. We believe that meaningful change happens 
+                        when experts collaborate to validate, refine, and improve ESG indicators.
+                    </p>
+                    <p class="text-secondary">
+                        Our platform enables professionals from diverse backgrounds to contribute their 
+                        knowledge, review ESG metrics, and help organizations make better sustainability decisions.
+                    </p>
+                </div>
+                <div class="card p-8">
+                    <div class="stat-value text-gradient" style="font-size: var(--text-6xl);">2024</div>
+                    <p class="text-secondary">Founded with a vision to democratize ESG expertise and make sustainability accessible to all.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="section" style="background: white;">
+        <div class="container">
+            <div class="text-center mb-8">
+                <h2>Our Core Values</h2>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                    </div>
+                    <h4>Integrity</h4>
+                    <p class="text-secondary">We uphold the highest standards of accuracy and honesty in all ESG validations.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: var(--social-bg); color: var(--social);">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="2" y1="12" x2="22" y2="12"></line>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                        </svg>
+                    </div>
+                    <h4>Collaboration</h4>
+                    <p class="text-secondary">We bring together experts from around the world to share knowledge and insights.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: var(--governance-bg); color: var(--governance);">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2v4"></path>
+                            <path d="M12 18v4"></path>
+                            <path d="M4.93 4.93l2.83 2.83"></path>
+                            <path d="M16.24 16.24l2.83 2.83"></path>
+                            <path d="M2 12h4"></path>
+                            <path d="M18 12h4"></path>
+                            <path d="M4.93 19.07l2.83-2.83"></path>
+                            <path d="M16.24 7.76l2.83-2.83"></path>
+                        </svg>
+                    </div>
+                    <h4>Impact</h4>
+                    <p class="text-secondary">Every contribution on our platform drives real-world sustainability improvements.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="section">
+        <div class="container">
+            <div class="text-center mb-8">
+                <h2>Join Our Community</h2>
+                <p class="text-secondary" style="max-width: 600px; margin: var(--space-4) auto;">
+                    Our community includes sustainability professionals, researchers, consultants, 
+                    and corporate leaders committed to ESG excellence.
+                </p>
+            </div>
+            <div class="text-center">
+                <a href="/champion-register.html" class="btn btn-primary btn-lg">Become a Champion</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="/" class="logo">
+                        <div class="logo-icon">ESG</div>
+                        <span>Champions</span>
+                    </a>
+                    <p class="footer-description">Empowering sustainability experts worldwide.</p>
+                </div>
+                <div>
+                    <h6 class="footer-title">Platform</h6>
+                    <ul class="footer-links">
+                        <li><a href="/about.html" class="footer-link">About Us</a></li>
+                        <li><a href="/champion-panels.html" class="footer-link">ESG Panels</a></li>
+                        <li><a href="/faq.html" class="footer-link">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h6 class="footer-title">Legal</h6>
+                    <ul class="footer-links">
+                        <li><a href="/privacy.html" class="footer-link">Privacy Policy</a></li>
+                        <li><a href="/cookie-policy.html" class="footer-link">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 STIF. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="supabase-service.js"></script>
+    <script src="champion-auth-supabase.js"></script>
+    <script src="champion-db-supabase.js"></script>
+    <script src="dynamic-navigation.js"></script>
+    <script src="mobile-menu.js"></script>
+    <script src="logout.js"></script>
+</body>
+</html>
+

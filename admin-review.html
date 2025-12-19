@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Admin Review Panel - ESG Champions Platform">
+    <title>Admin Panel | ESG Champions</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    
+    <style>
+        .admin-tabs {
+            display: flex;
+            gap: var(--space-2);
+            margin-bottom: var(--space-6);
+            border-bottom: 2px solid var(--gray-200);
+            padding-bottom: var(--space-2);
+        }
+        .admin-tab {
+            padding: var(--space-3) var(--space-5);
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            font-weight: 600;
+            color: var(--gray-500);
+            cursor: pointer;
+            transition: all var(--transition);
+            background: none;
+            border: none;
+        }
+        .admin-tab:hover {
+            color: var(--gray-700);
+            background: var(--gray-50);
+        }
+        .admin-tab.active {
+            color: var(--primary-700);
+            background: var(--primary-50);
+            border-bottom: 2px solid var(--primary-500);
+            margin-bottom: -2px;
+        }
+        .review-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            margin-bottom: var(--space-4);
+            box-shadow: var(--shadow);
+            transition: all var(--transition);
+        }
+        .review-card:hover {
+            box-shadow: var(--shadow-lg);
+        }
+        .review-actions {
+            display: flex;
+            gap: var(--space-2);
+            margin-top: var(--space-4);
+            padding-top: var(--space-4);
+            border-top: 1px solid var(--gray-100);
+        }
+    </style>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="/" class="logo">
+                <div class="logo-icon">ESG</div>
+                <span>Champions</span>
+            </a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="/" class="nav-link">Home</a></li>
+                    <li><a href="/champion-dashboard.html" class="nav-link">Dashboard</a></li>
+                    <li><a href="/champion-panels.html" class="nav-link">Panels</a></li>
+                    <li><a href="/admin-review.html" class="nav-link active">Admin</a></li>
+                </ul>
+            </nav>
+            <div class="nav-actions"></div>
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <button class="mobile-menu-close">&times;</button>
+        <ul class="mobile-nav-menu"></ul>
+    </div>
+
+    <!-- Main Content -->
+    <main style="padding-top: 100px; min-height: 100vh; background: var(--gray-50);">
+        <div class="container">
+            <!-- Header -->
+            <div class="flex-between mb-6">
+                <div>
+                    <h1>Admin Panel</h1>
+                    <p class="text-secondary">Manage reviews, panels, and indicators</p>
+                </div>
+                <button class="btn btn-secondary" id="export-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Export Data
+                </button>
+            </div>
+
+            <!-- Admin Tabs -->
+            <div class="admin-tabs">
+                <button class="admin-tab active" data-tab="reviews">
+                    Review Queue
+                    <span class="badge badge-warning" id="pending-count" style="margin-left: var(--space-2);">0</span>
+                </button>
+                <button class="admin-tab" data-tab="panels">Panels</button>
+                <button class="admin-tab" data-tab="indicators">Indicators</button>
+                <button class="admin-tab" data-tab="champions">Champions</button>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loading-state" class="flex-center" style="height: 300px;">
+                <div class="loading-spinner"></div>
+            </div>
+
+            <!-- Tab Content -->
+            <div id="admin-content" class="hidden">
+                <!-- Reviews Tab -->
+                <div id="tab-reviews" class="tab-content">
+                    <div id="reviews-queue">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Panels Tab -->
+                <div id="tab-panels" class="tab-content hidden">
+                    <div class="flex-between mb-4">
+                        <h3>ESG Panels</h3>
+                        <button class="btn btn-primary" id="add-panel-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            Add Panel
+                        </button>
+                    </div>
+                    <div id="panels-list">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Indicators Tab -->
+                <div id="tab-indicators" class="tab-content hidden">
+                    <div class="flex-between mb-4">
+                        <h3>ESG Indicators</h3>
+                        <button class="btn btn-primary" id="add-indicator-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            Add Indicator
+                        </button>
+                    </div>
+                    <div id="indicators-list">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Champions Tab -->
+                <div id="tab-champions" class="tab-content hidden">
+                    <h3 class="mb-4">Champions</h3>
+                    <div id="champions-list">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Review Modal -->
+    <div class="modal-backdrop" id="review-modal-backdrop">
+        <div class="modal" id="review-modal" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3 class="modal-title" id="review-modal-title">Review Details</h3>
+                <button class="modal-close" id="review-modal-close">&times;</button>
+            </div>
+            <div class="modal-body" id="review-modal-body">
+                <!-- Populated by JS -->
+            </div>
+            <div class="modal-footer" id="review-modal-footer">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2024 STIF. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="supabase-service.js"></script>
+    <script src="champion-auth-supabase.js"></script>
+    <script src="champion-db-supabase.js"></script>
+    <script src="dynamic-navigation.js"></script>
+    <script src="mobile-menu.js"></script>
+    <script src="logout.js"></script>
+    <script src="admin-service.js"></script>
+    <script src="admin-review.js"></script>
+</body>
+</html>
+

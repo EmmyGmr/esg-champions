@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cookie Policy for ESG Champions Platform">
+    <title>Cookie Policy | ESG Champions</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    
+    <style>
+        .policy-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .policy-content h2 {
+            margin-top: var(--space-10);
+            margin-bottom: var(--space-4);
+            font-size: var(--text-2xl);
+        }
+        .policy-content p, .policy-content li {
+            color: var(--gray-600);
+            line-height: 1.8;
+        }
+        .policy-content ul {
+            margin-left: var(--space-6);
+            margin-bottom: var(--space-4);
+        }
+        .policy-content li {
+            margin-bottom: var(--space-2);
+        }
+        .cookie-table {
+            width: 100%;
+            margin: var(--space-6) 0;
+            border-collapse: collapse;
+        }
+        .cookie-table th, .cookie-table td {
+            padding: var(--space-4);
+            text-align: left;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        .cookie-table th {
+            background: var(--gray-50);
+            font-weight: 600;
+        }
+        .last-updated {
+            color: var(--gray-500);
+            font-size: var(--text-sm);
+            margin-bottom: var(--space-8);
+        }
+    </style>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="/" class="logo">
+                <div class="logo-icon">ESG</div>
+                <span>Champions</span>
+            </a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="/" class="nav-link">Home</a></li>
+                    <li><a href="/about.html" class="nav-link">About</a></li>
+                    <li><a href="/faq.html" class="nav-link">FAQ</a></li>
+                </ul>
+            </nav>
+            <div class="nav-actions">
+                <a href="/champion-login.html" class="btn btn-ghost">Login</a>
+                <a href="/champion-register.html" class="btn btn-primary">Get Started</a>
+            </div>
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Content -->
+    <section class="section" style="padding-top: 140px;">
+        <div class="container">
+            <div class="policy-content">
+                <h1>Cookie Policy</h1>
+                <p class="last-updated">Last updated: December 2024</p>
+
+                <p>This Cookie Policy explains how STIF ("we", "us", or "our") uses cookies and similar technologies when you visit the ESG Champions Platform.</p>
+
+                <h2>1. What Are Cookies?</h2>
+                <p>Cookies are small text files stored on your device when you visit a website. They help websites remember your preferences, understand how you use the site, and improve your experience.</p>
+
+                <h2>2. Types of Cookies We Use</h2>
+                
+                <table class="cookie-table">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Purpose</th>
+                            <th>Duration</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Essential</strong></td>
+                            <td>Required for authentication, security, and basic platform functionality</td>
+                            <td>Session / 7 days</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Functional</strong></td>
+                            <td>Remember your preferences and settings</td>
+                            <td>1 year</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Analytics</strong></td>
+                            <td>Help us understand how visitors use the platform</td>
+                            <td>2 years</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2>3. Essential Cookies</h2>
+                <p>These cookies are necessary for the platform to function and cannot be disabled. They include:</p>
+                <ul>
+                    <li><strong>Authentication tokens:</strong> Keep you logged in securely</li>
+                    <li><strong>Session cookies:</strong> Maintain your session state</li>
+                    <li><strong>Security cookies:</strong> Protect against CSRF and other attacks</li>
+                </ul>
+
+                <h2>4. Functional Cookies</h2>
+                <p>These enhance your experience by remembering choices you make:</p>
+                <ul>
+                    <li>Language preferences</li>
+                    <li>Theme settings (light/dark mode)</li>
+                    <li>Last visited pages for "Continue where you left off"</li>
+                </ul>
+
+                <h2>5. Analytics Cookies</h2>
+                <p>We use analytics to understand how visitors interact with our platform. This data is aggregated and anonymous. We may use:</p>
+                <ul>
+                    <li>Page view tracking</li>
+                    <li>Feature usage statistics</li>
+                    <li>Performance monitoring</li>
+                </ul>
+
+                <h2>6. Third-Party Cookies</h2>
+                <p>Our platform uses services that may set their own cookies:</p>
+                <ul>
+                    <li><strong>Supabase:</strong> Authentication and database services</li>
+                    <li><strong>LinkedIn:</strong> If you choose to sign in with LinkedIn</li>
+                </ul>
+
+                <h2>7. Managing Cookies</h2>
+                <p>You can control cookies through your browser settings:</p>
+                <ul>
+                    <li><strong>Chrome:</strong> Settings → Privacy and security → Cookies</li>
+                    <li><strong>Firefox:</strong> Preferences → Privacy & Security → Cookies</li>
+                    <li><strong>Safari:</strong> Preferences → Privacy → Cookies</li>
+                    <li><strong>Edge:</strong> Settings → Cookies and site permissions</li>
+                </ul>
+                <p>Note: Disabling essential cookies may prevent you from using certain features of the platform.</p>
+
+                <h2>8. Updates to This Policy</h2>
+                <p>We may update this Cookie Policy from time to time. Changes will be posted on this page with an updated revision date.</p>
+
+                <h2>9. Contact Us</h2>
+                <p>If you have questions about our use of cookies, please contact us at: <strong>privacy@stif.org</strong></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2024 STIF. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="supabase-service.js"></script>
+    <script src="champion-auth-supabase.js"></script>
+    <script src="champion-db-supabase.js"></script>
+    <script src="dynamic-navigation.js"></script>
+    <script src="mobile-menu.js"></script>
+    <script src="logout.js"></script>
+</body>
+</html>
+

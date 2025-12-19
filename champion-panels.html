@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Browse ESG Panels - ESG Champions Platform">
+    <title>ESG Panels | ESG Champions</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="/" class="logo">
+                <div class="logo-icon">ESG</div>
+                <span>Champions</span>
+            </a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="/" class="nav-link">Home</a></li>
+                    <li><a href="/champion-dashboard.html" class="nav-link">Dashboard</a></li>
+                    <li><a href="/champion-panels.html" class="nav-link active">Panels</a></li>
+                    <li><a href="/ranking.html" class="nav-link">Rankings</a></li>
+                </ul>
+            </nav>
+            <div class="nav-actions"></div>
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <button class="mobile-menu-close">&times;</button>
+        <ul class="mobile-nav-menu"></ul>
+    </div>
+
+    <!-- Main Content -->
+    <main style="padding-top: 100px; min-height: 100vh; background: var(--gray-50);">
+        <div class="container">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h1>ESG Panels</h1>
+                <p class="text-secondary" style="max-width: 600px; margin: var(--space-4) auto;">
+                    Explore our comprehensive ESG indicator panels. Select a panel to view and validate indicators.
+                </p>
+            </div>
+
+            <!-- Category Filter -->
+            <div class="flex-center mb-8">
+                <div class="btn-group" style="display: flex; gap: var(--space-2); background: white; padding: var(--space-2); border-radius: var(--radius-lg); box-shadow: var(--shadow);">
+                    <button class="btn btn-ghost filter-btn active" data-filter="all">All Panels</button>
+                    <button class="btn btn-ghost filter-btn" data-filter="environmental">Environmental</button>
+                    <button class="btn btn-ghost filter-btn" data-filter="social">Social</button>
+                    <button class="btn btn-ghost filter-btn" data-filter="governance">Governance</button>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loading-state" class="flex-center" style="height: 300px;">
+                <div class="loading-spinner"></div>
+            </div>
+
+            <!-- Panels Grid -->
+            <div id="panels-grid" class="hidden">
+                <!-- Environmental Panels -->
+                <section id="environmental-section" class="mb-8">
+                    <h2 class="mb-4" style="color: var(--environmental);">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                            <path d="M12 22c4-4 8-7.5 8-12a8 8 0 1 0-16 0c0 4.5 4 8 8 12z"></path>
+                        </svg>
+                        Environmental
+                    </h2>
+                    <div class="features-grid" id="environmental-panels"></div>
+                </section>
+
+                <!-- Social Panels -->
+                <section id="social-section" class="mb-8">
+                    <h2 class="mb-4" style="color: var(--social);">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                        </svg>
+                        Social
+                    </h2>
+                    <div class="features-grid" id="social-panels"></div>
+                </section>
+
+                <!-- Governance Panels -->
+                <section id="governance-section" class="mb-8">
+                    <h2 class="mb-4" style="color: var(--governance);">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                            <path d="M3 21h18"></path>
+                            <path d="M3 10h18"></path>
+                            <path d="M5 6l7-3 7 3"></path>
+                        </svg>
+                        Governance
+                    </h2>
+                    <div class="features-grid" id="governance-panels"></div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2024 STIF. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="supabase-service.js"></script>
+    <script src="champion-auth-supabase.js"></script>
+    <script src="champion-db-supabase.js"></script>
+    <script src="dynamic-navigation.js"></script>
+    <script src="mobile-menu.js"></script>
+    <script src="logout.js"></script>
+    <script src="champion-panels.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ESG Champions Leaderboard and Rankings">
+    <title>Rankings | ESG Champions</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="/" class="logo">
+                <div class="logo-icon">ESG</div>
+                <span>Champions</span>
+            </a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="/" class="nav-link">Home</a></li>
+                    <li><a href="/champion-dashboard.html" class="nav-link">Dashboard</a></li>
+                    <li><a href="/champion-panels.html" class="nav-link">Panels</a></li>
+                    <li><a href="/ranking.html" class="nav-link active">Rankings</a></li>
+                </ul>
+            </nav>
+            <div class="nav-actions"></div>
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <button class="mobile-menu-close">&times;</button>
+        <ul class="mobile-nav-menu"></ul>
+    </div>
+
+    <!-- Main Content -->
+    <main style="padding-top: 100px; min-height: 100vh; background: var(--gray-50);">
+        <div class="container">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h1>Champion Leaderboard</h1>
+                <p class="text-secondary" style="max-width: 600px; margin: var(--space-4) auto;">
+                    See who's leading the sustainability movement. Earn credits by submitting quality reviews.
+                </p>
+            </div>
+
+            <!-- Your Rank Card (if logged in) -->
+            <div id="your-rank-card" class="widget hidden mb-6" style="background: linear-gradient(135deg, var(--primary-600), var(--primary-700));">
+                <div class="widget-body" style="color: white;">
+                    <div class="flex-between">
+                        <div>
+                            <h3 style="color: white; margin-bottom: var(--space-2);">Your Position</h3>
+                            <p style="color: var(--primary-100); margin: 0;">Keep contributing to climb the leaderboard!</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="stat-value" style="font-size: var(--text-5xl); color: white;" id="your-rank">#--</div>
+                            <div style="color: var(--primary-200);">
+                                <span id="your-credits">0</span> credits
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Period Filter -->
+            <div class="flex-between mb-6">
+                <div class="flex" style="gap: var(--space-2); background: white; padding: var(--space-2); border-radius: var(--radius-lg); box-shadow: var(--shadow);">
+                    <button class="btn btn-primary period-btn active" data-period="all">All Time</button>
+                    <button class="btn btn-ghost period-btn" data-period="30days">30 Days</button>
+                    <button class="btn btn-ghost period-btn" data-period="7days">This Week</button>
+                </div>
+                <div class="text-secondary">
+                    <span id="champion-count">0</span> Champions
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loading-state" class="flex-center" style="height: 300px;">
+                <div class="loading-spinner"></div>
+            </div>
+
+            <!-- Top 3 Podium -->
+            <div id="podium" class="hidden mb-8">
+                <div class="flex-center" style="gap: var(--space-4); flex-wrap: wrap;">
+                    <!-- Second Place -->
+                    <div class="card text-center p-6" style="order: 1; width: 200px;">
+                        <div class="leaderboard-rank" style="width: 48px; height: 48px; font-size: var(--text-xl); margin: 0 auto var(--space-4); background: linear-gradient(135deg, #c0c0c0, #a0a0a0); color: #505050;">2</div>
+                        <div class="avatar avatar-lg" style="margin: 0 auto var(--space-3);" id="rank2-avatar">?</div>
+                        <h4 id="rank2-name" style="margin-bottom: var(--space-1);">-</h4>
+                        <p class="text-secondary" style="font-size: var(--text-sm);" id="rank2-company">-</p>
+                        <div class="stat-value text-gradient" style="font-size: var(--text-2xl); margin-top: var(--space-3);" id="rank2-credits">0</div>
+                        <div class="text-muted" style="font-size: var(--text-xs);">credits</div>
+                    </div>
+
+                    <!-- First Place -->
+                    <div class="card text-center p-8" style="order: 0; width: 240px; transform: scale(1.1); z-index: 1; box-shadow: var(--shadow-xl);">
+                        <div class="leaderboard-rank" style="width: 64px; height: 64px; font-size: var(--text-2xl); margin: 0 auto var(--space-4); background: linear-gradient(135deg, #ffd700, #ffb700); color: #7c5600;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="display: block;">
+                                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+                            </svg>
+                        </div>
+                        <div class="avatar avatar-xl" style="margin: 0 auto var(--space-4);" id="rank1-avatar">?</div>
+                        <h3 id="rank1-name" style="margin-bottom: var(--space-1);">-</h3>
+                        <p class="text-secondary" id="rank1-company">-</p>
+                        <div class="stat-value text-gradient" style="font-size: var(--text-3xl); margin-top: var(--space-4);" id="rank1-credits">0</div>
+                        <div class="text-muted" style="font-size: var(--text-sm);">credits</div>
+                    </div>
+
+                    <!-- Third Place -->
+                    <div class="card text-center p-6" style="order: 2; width: 200px;">
+                        <div class="leaderboard-rank" style="width: 48px; height: 48px; font-size: var(--text-xl); margin: 0 auto var(--space-4); background: linear-gradient(135deg, #cd7f32, #b87333); color: #4a2800;">3</div>
+                        <div class="avatar avatar-lg" style="margin: 0 auto var(--space-3);" id="rank3-avatar">?</div>
+                        <h4 id="rank3-name" style="margin-bottom: var(--space-1);">-</h4>
+                        <p class="text-secondary" style="font-size: var(--text-sm);" id="rank3-company">-</p>
+                        <div class="stat-value text-gradient" style="font-size: var(--text-2xl); margin-top: var(--space-3);" id="rank3-credits">0</div>
+                        <div class="text-muted" style="font-size: var(--text-xs);">credits</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Leaderboard List -->
+            <div class="widget" id="leaderboard-widget">
+                <div class="widget-body" style="padding: 0;">
+                    <ul class="leaderboard" id="leaderboard-list">
+                        <!-- Populated by JS -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2024 STIF. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="supabase-service.js"></script>
+    <script src="champion-auth-supabase.js"></script>
+    <script src="champion-db-supabase.js"></script>
+    <script src="dynamic-navigation.js"></script>
+    <script src="mobile-menu.js"></script>
+    <script src="logout.js"></script>
+    <script src="ranking-supabase.js"></script>
+</body>
+</html>
+

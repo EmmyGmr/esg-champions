@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Register for ESG Champions Platform">
+    <title>Register | ESG Champions</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    
+    <style>
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-6);
+            background: linear-gradient(135deg, var(--primary-50) 0%, white 50%, var(--gray-50) 100%);
+        }
+        .auth-card {
+            width: 100%;
+            max-width: 480px;
+            background: white;
+            border-radius: var(--radius-2xl);
+            box-shadow: var(--shadow-xl);
+            padding: var(--space-10);
+        }
+        .auth-header {
+            text-align: center;
+            margin-bottom: var(--space-8);
+        }
+        .auth-logo {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+            margin-bottom: var(--space-6);
+        }
+        .auth-title {
+            font-size: var(--text-2xl);
+            margin-bottom: var(--space-2);
+        }
+        .auth-subtitle {
+            color: var(--gray-500);
+            font-size: var(--text-sm);
+        }
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+            margin: var(--space-6) 0;
+            color: var(--gray-400);
+            font-size: var(--text-sm);
+        }
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--gray-200);
+        }
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-3);
+            width: 100%;
+            padding: var(--space-3) var(--space-4);
+            background: white;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            color: var(--gray-700);
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+        .social-btn:hover {
+            border-color: var(--gray-300);
+            background: var(--gray-50);
+        }
+        .social-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+        .auth-footer {
+            text-align: center;
+            margin-top: var(--space-6);
+            padding-top: var(--space-6);
+            border-top: 1px solid var(--gray-100);
+        }
+        .auth-footer p {
+            font-size: var(--text-sm);
+            color: var(--gray-500);
+            margin-bottom: 0;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-4);
+        }
+        .agreement-box {
+            background: var(--gray-50);
+            border-radius: var(--radius-lg);
+            padding: var(--space-4);
+            margin-bottom: var(--space-4);
+        }
+        .agreement-box h4 {
+            font-size: var(--text-sm);
+            margin-bottom: var(--space-2);
+        }
+        .agreement-box p {
+            font-size: var(--text-xs);
+            color: var(--gray-500);
+            margin-bottom: var(--space-3);
+        }
+        .success-message {
+            text-align: center;
+            padding: var(--space-8);
+        }
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--success-bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--space-6);
+            color: var(--success);
+        }
+        @media (max-width: 480px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card animate-fade-in">
+            <div class="auth-header">
+                <a href="/" class="auth-logo logo">
+                    <div class="logo-icon">ESG</div>
+                    <span>Champions</span>
+                </a>
+                <h1 class="auth-title">Become a Champion</h1>
+                <p class="auth-subtitle">Join our community of sustainability experts</p>
+            </div>
+
+            <!-- Registration Form -->
+            <div id="register-form-container">
+                <!-- LinkedIn Register -->
+                <button type="button" class="social-btn" id="linkedin-btn">
+                    <svg viewBox="0 0 24 24" fill="#0A66C2">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                    Continue with LinkedIn
+                </button>
+
+                <div class="divider">or register with email</div>
+
+                <form id="register-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="full_name">Full Name</label>
+                            <input 
+                                type="text" 
+                                id="full_name" 
+                                class="form-input" 
+                                placeholder="Jane Doe"
+                                required
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="company">Company</label>
+                            <input 
+                                type="text" 
+                                id="company" 
+                                class="form-input" 
+                                placeholder="Your organization"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="job_title">Job Title</label>
+                        <input 
+                            type="text" 
+                            id="job_title" 
+                            class="form-input" 
+                            placeholder="e.g., Sustainability Manager"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="email">Email</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            class="form-input" 
+                            placeholder="you@company.com"
+                            required
+                            autocomplete="email"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="password">Password</label>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            class="form-input" 
+                            placeholder="At least 6 characters"
+                            required
+                            minlength="6"
+                            autocomplete="new-password"
+                        >
+                        <p class="form-helper">Must be at least 6 characters</p>
+                    </div>
+
+                    <!-- Agreements -->
+                    <div class="agreement-box">
+                        <h4>Contributor Agreements</h4>
+                        <p>By registering, you agree to our contributor terms which govern intellectual property rights and content contributions.</p>
+                        
+                        <label class="form-checkbox">
+                            <input type="checkbox" id="cla_accepted" required>
+                            <span>I accept the <a href="/contributor-agreements.html" target="_blank">Contributor License Agreement (CLA)</a></span>
+                        </label>
+                        
+                        <label class="form-checkbox mt-4">
+                            <input type="checkbox" id="nda_accepted">
+                            <span>I accept the <a href="/contributor-agreements.html" target="_blank">Non-Disclosure Agreement (NDA)</a> (optional)</span>
+                        </label>
+                    </div>
+
+                    <label class="form-checkbox mb-6">
+                        <input type="checkbox" id="terms_accepted" required>
+                        <span>I agree to the <a href="/privacy.html" target="_blank">Privacy Policy</a> and <a href="/terms.html" target="_blank">Terms of Service</a></span>
+                    </label>
+
+                    <div id="error-message" class="alert alert-error hidden" style="margin-bottom: var(--space-4);"></div>
+
+                    <button type="submit" class="btn btn-primary w-full" id="submit-btn">
+                        Create Account
+                    </button>
+                </form>
+
+                <div class="auth-footer">
+                    <p>Already have an account? <a href="/champion-login.html">Sign in</a></p>
+                </div>
+            </div>
+
+            <!-- Success Message -->
+            <div id="success-container" class="success-message hidden">
+                <div class="success-icon">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+                <h2>Check Your Email</h2>
+                <p class="text-secondary">We've sent a confirmation link to <strong id="confirm-email"></strong>. Please click the link to verify your account.</p>
+                <a href="/champion-login.html" class="btn btn-primary mt-6">Go to Login</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="supabase-service.js"></script>
+    <script src="champion-auth-supabase.js"></script>
+    <script src="logout.js"></script>
+    
+    <script>
+        // LinkedIn register
+        document.getElementById('linkedin-btn').addEventListener('click', async () => {
+            try {
+                const result = await window.championAuth.loginWithLinkedIn();
+                if (!result.success) {
+                    showError(result.error);
+                }
+            } catch (error) {
+                showError('LinkedIn registration failed. Please try again.');
+            }
+        });
+
+        // Email registration form
+        document.getElementById('register-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                full_name: document.getElementById('full_name').value,
+                company: document.getElementById('company').value,
+                job_title: document.getElementById('job_title').value,
+                cla_accepted: document.getElementById('cla_accepted').checked,
+                nda_accepted: document.getElementById('nda_accepted').checked
+            };
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const submitBtn = document.getElementById('submit-btn');
+            
+            // Disable button
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Creating account...';
+            hideError();
+            
+            try {
+                const result = await window.championAuth.register(email, password, formData);
+                
+                if (result.success) {
+                    // Show success message
+                    document.getElementById('register-form-container').classList.add('hidden');
+                    document.getElementById('success-container').classList.remove('hidden');
+                    document.getElementById('confirm-email').textContent = email;
+                } else {
+                    showError(result.error);
+                }
+            } catch (error) {
+                showError('An unexpected error occurred. Please try again.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Create Account';
+            }
+        });
+
+        function showError(message) {
+            const errorEl = document.getElementById('error-message');
+            errorEl.textContent = message;
+            errorEl.classList.remove('hidden');
+        }
+
+        function hideError() {
+            document.getElementById('error-message').classList.add('hidden');
+        }
+
+        // Check if already logged in
+        document.addEventListener('DOMContentLoaded', async () => {
+            await new Promise(resolve => setTimeout(resolve, 500));
+            if (window.championAuth.isAuthenticated()) {
+                window.location.href = '/champion-dashboard.html';
+            }
+        });
+    </script>
+</body>
+</html>
+
