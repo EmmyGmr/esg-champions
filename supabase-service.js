@@ -409,10 +409,9 @@ class SupabaseService {
             .from('reviews')
             .select('*, indicators(name), panels(name, category)')
             .eq('champion_id', championId)
-            .eq('is_deleted', false)
             .order('created_at', { ascending: false });
         if (error) throw error;
-        return data;
+        return data || [];
     }
 
     /**
