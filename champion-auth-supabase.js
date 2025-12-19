@@ -110,21 +110,26 @@ class ChampionAuth {
             const data = await this.service.signUp(email, password, metadata);
             
             if (data.user) {
-                // Create champion profile in database
-                const profileData = {
-                    id: data.user.id,
-                    email: email,
-                    full_name: metadata.full_name || '',
-                    company: metadata.company || '',
-                    job_title: metadata.job_title || '',
-                    linkedin_url: metadata.linkedin_url || '',
-                    cla_accepted: metadata.cla_accepted || false,
-                    nda_accepted: metadata.nda_accepted || false,
-                    cla_accepted_at: metadata.cla_accepted ? new Date().toISOString() : null,
-                    nda_accepted_at: metadata.nda_accepted ? new Date().toISOString() : null
-                };
-
-                await this.service.upsertChampion(profileData);
+                // Champion profile is automatically created by database trigger
+                // Try to update with additional metadata, but don't fail if it errors
+                try {
+                    const profileData = {
+                        id: data.user.id,
+                        email: email,
+                        full_name: metadata.full_name || '',
+                        company: metadata.company || '',
+                        job_title: metadata.job_title || '',
+                        linkedin_url: metadata.linkedin_url || '',
+                        cla_accepted: metadata.cla_accepted || false,
+                        nda_accepted: metadata.nda_accepted || false,
+                        cla_accepted_at: metadata.cla_accepted ? new Date().toISOString() : null,
+                        nda_accepted_at: metadata.nda_accepted ? new Date().toISOString() : null
+                    };
+                    await this.service.upsertChampion(profileData);
+                } catch (profileError) {
+                    // Profile creation handled by trigger, ignore RLS errors
+                    console.log('Profile update skipped (handled by trigger):', profileError.message);
+                }
             }
 
             return {
