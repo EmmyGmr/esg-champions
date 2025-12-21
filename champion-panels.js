@@ -68,23 +68,53 @@ class ChampionPanels {
             return;
         }
 
-        container.innerHTML = panels.map(panel => `
-            <div class="panel-card ${panel.category}" data-panel-id="${panel.id}" data-panel-name="${panel.name}" style="cursor: pointer;">
-                <div class="flex-between mb-4">
-                    <span class="badge badge-${panel.category}">${panel.category}</span>
-                    <span class="text-muted" style="font-size: var(--text-sm);">
-                        ${panel.indicator_count || 0} indicators
-                    </span>
+        container.innerHTML = panels.map(panel => {
+            // Get panel icon based on category/name
+            const panelIcon = this.getPanelIcon(panel.name, panel.category);
+            
+            // Get impact level (default based on category)
+            const impactLevel = panel.impact_level || (panel.category === 'environmental' ? 'high' : panel.category === 'social' ? 'medium' : 'medium');
+            const impactText = impactLevel === 'high' ? 'Impact High' : impactLevel === 'low' ? 'Impact Low' : 'Impact Medium';
+            
+            // Get estimated time
+            const estimatedTime = panel.estimated_time || '10-15 min';
+            
+            // Get status
+            const status = panel.user_status || 'not_started';
+            const statusText = status === 'completed' ? 'Completed' : status === 'in_progress' ? 'In Progress' : 'Not Started';
+            const statusClass = status === 'completed' ? 'badge-completed' : status === 'in_progress' ? 'badge-in-progress' : 'badge-not-started';
+            
+            // Progress percentage
+            const progress = panel.user_progress || 0;
+            
+            return `
+                <div class="panel-card ${panel.category}" data-panel-id="${panel.id}" data-panel-name="${panel.name}" style="cursor: pointer;">
+                    <div class="panel-card-header">
+                        <span class="panel-icon">${panelIcon}</span>
+                        <h3 class="panel-title">${panel.name}</h3>
+                    </div>
+                    
+                    <div style="margin-bottom: var(--space-3);">
+                        <span class="badge badge-impact-${impactLevel}">${impactText}</span>
+                    </div>
+                    
+                    <div class="panel-time-row">
+                        <span>Estimated time</span>
+                        <span>${estimatedTime}</span>
+                    </div>
+                    
+                    <div class="panel-progress-bar">
+                        <div class="panel-progress-fill" style="width: ${progress}%;"></div>
+                    </div>
+                    
+                    <div style="margin-bottom: var(--space-4);">
+                        <span class="badge-status ${statusClass}">${statusText}</span>
+                    </div>
+                    
+                    <button class="btn btn-primary w-full">Select Indicators</button>
                 </div>
-                <h3 style="font-size: var(--text-xl); margin-bottom: var(--space-2);">${panel.name}</h3>
-                <p class="text-secondary" style="margin-bottom: var(--space-4); font-size: var(--text-sm);">
-                    ${panel.description || 'Explore indicators in this panel'}
-                </p>
-                <div class="flex-between">
-                    <span class="btn btn-secondary btn-sm">Select Indicators</span>
-                </div>
-            </div>
-        `).join('');
+            `;
+        }).join('');
 
         // Add click handlers to panel cards
         container.querySelectorAll('.panel-card').forEach(card => {
@@ -209,35 +239,52 @@ class ChampionPanels {
             return;
         }
 
-        indicatorsList.innerHTML = indicators.map(indicator => `
-            <label class="indicator-item" data-indicator-id="${indicator.id}">
-                <input 
-                    type="checkbox" 
-                    class="indicator-checkbox" 
-                    value="${indicator.id}"
-                    data-name="${indicator.name}"
-                >
-                <div class="indicator-content">
-                    <div class="indicator-header">
+        indicatorsList.innerHTML = indicators.map(indicator => {
+            // Generate importance badge
+            const importance = indicator.importance_level || 'medium';
+            const importanceText = importance === 'high' ? 'High Importance' : importance === 'low' ? 'Low Importance' : 'Medium Importance';
+            
+            // Generate difficulty badge
+            const difficulty = indicator.difficulty || 'moderate';
+            const difficultyText = difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
+            
+            // Generate time estimate
+            const timeEstimate = indicator.time_estimate || '3-5 min';
+            
+            // Generate GRI standard
+            const griStandard = indicator.gri_standard || indicator.data_source || '';
+            
+            // Generate impact stars
+            const impactRating = indicator.impact_rating || 4;
+            const stars = '★'.repeat(impactRating) + '☆'.repeat(5 - impactRating);
+            
+            return `
+                <label class="indicator-item" data-indicator-id="${indicator.id}">
+                    <input 
+                        type="checkbox" 
+                        class="indicator-checkbox" 
+                        value="${indicator.id}"
+                        data-name="${indicator.name}"
+                    >
+                    <div class="indicator-content">
                         <h4 class="indicator-name">${indicator.name}</h4>
-                        ${indicator.panels ? `
-                            <span class="badge badge-${indicator.panels.category} badge-sm">${indicator.panels.name}</span>
-                        ` : ''}
+                        <p class="indicator-description">${indicator.description || 'No description available'}</p>
+                        
+                        <div class="indicator-badges">
+                            <span class="badge-importance-${importance}">${importanceText}</span>
+                            <span class="badge-difficulty">${difficultyText}</span>
+                            <span class="badge-time">${timeEstimate}</span>
+                            ${griStandard ? `<span class="badge-gri">${griStandard}</span>` : ''}
+                        </div>
+                        
+                        <div class="impact-rating">
+                            <span>Impact:</span>
+                            <span class="impact-stars">${stars}</span>
+                        </div>
                     </div>
-                    <p class="indicator-description">${indicator.description || 'No description available'}</p>
-                    ${indicator.methodology ? `
-                        <span class="indicator-meta">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <path d="M12 16v-4"></path>
-                                <path d="M12 8h.01"></path>
-                            </svg>
-                            ${indicator.methodology.substring(0, 80)}${indicator.methodology.length > 80 ? '...' : ''}
-                        </span>
-                    ` : ''}
-                </div>
-            </label>
-        `).join('');
+                </label>
+            `;
+        }).join('');
 
         // Add change handlers
         indicatorsList.querySelectorAll('.indicator-checkbox').forEach(checkbox => {
@@ -404,6 +451,37 @@ class ChampionPanels {
                 <button class="btn btn-primary mt-4" onclick="location.reload()">Retry</button>
             </div>
         `;
+    }
+
+    getPanelIcon(name, category) {
+        const nameLower = name.toLowerCase();
+        
+        // Environmental icons
+        if (nameLower.includes('climate') || nameLower.includes('ghg') || nameLower.includes('emission')) return '🌍';
+        if (nameLower.includes('energy')) return '⚡';
+        if (nameLower.includes('water')) return '💧';
+        if (nameLower.includes('waste') || nameLower.includes('circular')) return '♻️';
+        if (nameLower.includes('biodiversity') || nameLower.includes('land')) return '🌳';
+        
+        // Social icons
+        if (nameLower.includes('human rights')) return '⚖️';
+        if (nameLower.includes('labor') || nameLower.includes('workforce')) return '👥';
+        if (nameLower.includes('health') || nameLower.includes('safety')) return '🏥';
+        if (nameLower.includes('diversity') || nameLower.includes('inclusion')) return '🌈';
+        if (nameLower.includes('community')) return '🏘️';
+        
+        // Governance icons
+        if (nameLower.includes('governance') || nameLower.includes('corporate')) return '🏛️';
+        if (nameLower.includes('ethics') || nameLower.includes('compliance')) return '📜';
+        if (nameLower.includes('risk')) return '⚠️';
+        if (nameLower.includes('transparency') || nameLower.includes('reporting')) return '📊';
+        
+        // Default by category
+        if (category === 'environmental') return '🌿';
+        if (category === 'social') return '👥';
+        if (category === 'governance') return '🏛️';
+        
+        return '📋';
     }
 }
 
