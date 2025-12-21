@@ -336,10 +336,22 @@ class SupabaseService {
         const { data, error } = await this.client
             .from('indicators')
             .select('*, panels(name, category)')
-            .eq('is_active', true)
-            .order('order_index');
+            .order('name');
         if (error) throw error;
-        return data;
+        return data || [];
+    }
+
+    async getIndicatorsByIds(indicatorIds) {
+        if (!indicatorIds || indicatorIds.length === 0) {
+            return [];
+        }
+        const { data, error } = await this.client
+            .from('indicators')
+            .select('*, panels(name, category)')
+            .in('id', indicatorIds)
+            .order('name');
+        if (error) throw error;
+        return data || [];
     }
 
     /**

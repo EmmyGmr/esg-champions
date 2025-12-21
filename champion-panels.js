@@ -181,9 +181,9 @@ class ChampionPanels {
         modal.classList.remove('hidden');
         document.body.style.overflow = 'hidden';
         
-        // Fetch indicators for this panel
+        // Fetch ALL indicators (system-wide, not panel-specific)
         try {
-            this.indicators = await window.championDB.getIndicatorsByPanel(panelId);
+            this.indicators = await window.championDB.getAllIndicators();
             this.renderIndicators(this.indicators);
         } catch (error) {
             console.error('Error loading indicators:', error);
@@ -218,7 +218,12 @@ class ChampionPanels {
                     data-name="${indicator.name}"
                 >
                 <div class="indicator-content">
-                    <h4 class="indicator-name">${indicator.name}</h4>
+                    <div class="indicator-header">
+                        <h4 class="indicator-name">${indicator.name}</h4>
+                        ${indicator.panels ? `
+                            <span class="badge badge-${indicator.panels.category} badge-sm">${indicator.panels.name}</span>
+                        ` : ''}
+                    </div>
                     <p class="indicator-description">${indicator.description || 'No description available'}</p>
                     ${indicator.methodology ? `
                         <span class="indicator-meta">

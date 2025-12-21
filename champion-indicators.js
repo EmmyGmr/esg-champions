@@ -9,26 +9,44 @@ class ChampionIndicators {
         this.indicators = [];
         this.selectedIndicator = null;
         this.rating = 0;
+        this.selectedIndicatorIds = [];
     }
 
     async init() {
         // Wait for services to be ready
         await new Promise(resolve => setTimeout(resolve, 300));
         
-        // Get panel ID from URL
+        // Get URL parameters
         const params = new URLSearchParams(window.location.search);
         const panelId = params.get('panel');
+        const selectedIds = params.get('selected');
         
         if (!panelId) {
             window.location.href = '/champion-panels.html';
             return;
         }
 
-        // Check if specific indicator requested
+        // Parse selected indicator IDs from URL
+        if (selectedIds) {
+            this.selectedIndicatorIds = selectedIds.split(',').filter(id => id.trim());
+        }
+
+        // Also check sessionStorage for selected indicators
+        const storedSelection = sessionStorage.getItem('selectedIndicators');
+        if (storedSelection && this.selectedIndicatorIds.length === 0) {
+            try {
+                const data = JSON.parse(storedSelection);
+                this.selectedIndicatorIds = data.indicatorIds || [];
+            } catch (e) {
+                console.log('Could not parse stored selection');
+            }
+        }
+
+        // Check if specific indicator requested for detail view
         const indicatorId = params.get('indicator');
         
-        // Load panel and indicators
-        await this.loadPanel(panelId);
+        // Load panel and ONLY selected indicators
+        await this.loadPanelWithSelectedIndicators(panelId);
         
         // Select indicator if specified
         if (indicatorId) {
@@ -36,11 +54,19 @@ class ChampionIndicators {
         }
     }
 
-    async loadPanel(panelId) {
+    async loadPanelWithSelectedIndicators(panelId) {
         try {
-            const data = await window.championDB.getPanelWithIndicators(panelId);
-            this.panel = data;
-            this.indicators = data.indicators || [];
+            // Get panel info
+            const panel = await window.supabaseService.getPanel(panelId);
+            this.panel = panel;
+            
+            // Get only the selected indicators
+            if (this.selectedIndicatorIds.length > 0) {
+                this.indicators = await window.championDB.getIndicatorsByIds(this.selectedIndicatorIds);
+            } else {
+                // Fallback: get all indicators for this panel if no selection
+                this.indicators = await window.championDB.getIndicatorsByPanel(panelId);
+            }
             
             // Update UI
             this.renderPanelHeader();
@@ -51,13 +77,13 @@ class ChampionIndicators {
             document.getElementById('indicators-content').classList.remove('hidden');
             
             // Log activity
-            if (window.championAuth.isAuthenticated()) {
+            if (window.championAuth && window.championAuth.isAuthenticated()) {
                 window.championDB.logActivity('view_panel', panelId);
             }
             
         } catch (error) {
             console.error('Error loading panel:', error);
-            this.showError('Failed to load panel. Please try again.');
+            this.showError('Failed to load indicators. Please try again.');
         }
     }
 
