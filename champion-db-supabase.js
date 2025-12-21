@@ -40,6 +40,18 @@ class ChampionDB {
     }
 
     /**
+     * Get indicators by panel ID
+     */
+    async getIndicatorsByPanel(panelId) {
+        try {
+            return await this.service.getIndicatorsByPanel(panelId);
+        } catch (error) {
+            console.error('Error getting indicators by panel:', error);
+            throw error;
+        }
+    }
+
+    /**
      * Get panel with its indicators
      */
     async getPanelWithIndicators(panelId) {
