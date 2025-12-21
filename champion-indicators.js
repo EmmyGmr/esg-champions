@@ -224,43 +224,6 @@ class ChampionIndicators {
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label class="form-label" for="comments-input">Comments</label>
-                            <textarea 
-                                id="comments-input" 
-                                class="form-textarea" 
-                                placeholder="Enter comments or references...."
-                                rows="4"
-                            ></textarea>
-                        </div>
-                    </div>
-                ` : ''}
-
-                ${indicator.methodology ? `
-                    <div class="methodology-section">
-                        <h4 class="section-title">Methodology</h4>
-                        <p class="methodology-text">${indicator.methodology}</p>
-                        
-                        <div class="methodology-grid">
-                            ${indicator.data_source ? `
-                                <div class="methodology-item">
-                                    <span class="methodology-label">DATA SOURCE</span>
-                                    <span class="methodology-value">${indicator.data_source}</span>
-                                </div>
-                            ` : ''}
-                            ${indicator.unit ? `
-                                <div class="methodology-item">
-                                    <span class="methodology-label">UNIT</span>
-                                    <span class="methodology-value">${indicator.unit}</span>
-                                </div>
-                            ` : ''}
-                            ${indicator.frequency ? `
-                                <div class="methodology-item">
-                                    <span class="methodology-label">FREQUENCY</span>
-                                    <span class="methodology-value">${indicator.frequency}</span>
-                                </div>
-                            ` : ''}
-                        </div>
                     </div>
                 ` : ''}
 
@@ -398,7 +361,6 @@ class ChampionIndicators {
         }
 
         const content = document.getElementById('review-content').value.trim();
-        const comments = document.getElementById('comments-input')?.value.trim() || '';
         const isNecessary = document.querySelector('input[name="is_necessary"]:checked')?.value || null;
         
         if (!content) {
@@ -420,8 +382,7 @@ class ChampionIndicators {
             content: content,
             rating: this.rating,
             clarity_rating: this.clarityRating || null,
-            is_necessary: isNecessary,
-            comments: comments
+            is_necessary: isNecessary
         };
 
         try {
