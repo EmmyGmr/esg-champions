@@ -477,7 +477,7 @@ p {
 .btn-primary {
     background: var(--primary-green);
     color: var(--background-white);
-    text-transform: uppercase;
+    text-transform: none; /* Title Case applied in HTML */
     border-radius: var(--radius-lg);
     box-shadow: 0 4px 14px 0 rgba(0, 155, 119, 0.25);
 }
@@ -1086,9 +1086,11 @@ p {
 }
 
 .hero-title {
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-size: 36px;
     margin-bottom: var(--space-6);
-    line-height: 1.1;
+    line-height: 1.5;
+    font-weight: 700;
+    text-transform: none; /* Sentence case - not uppercase */
 }
 
 .hero-subtitle {
@@ -1535,7 +1537,7 @@ p {
     }
     
     .hero-title {
-        font-size: var(--text-4xl);
+        font-size: 28px;
     }
     
     .hero-actions {
