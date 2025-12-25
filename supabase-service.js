@@ -400,14 +400,21 @@ class SupabaseService {
      * Get reviews for an indicator
      */
     async getReviewsByIndicator(indicatorId) {
-        const { data, error } = await this.client
-            .from('reviews')
-            .select('*, champions(id, full_name, avatar_url)')
-            .eq('indicator_id', indicatorId)
-            .eq('is_deleted', false)
-            .order('created_at', { ascending: false });
-        if (error) throw error;
-        return data;
+        try {
+            const { data, error } = await this.client
+                .from('reviews')
+                .select('*')
+                .eq('indicator_id', indicatorId)
+                .order('created_at', { ascending: false });
+            if (error) {
+                console.warn('getReviewsByIndicator error:', error.message);
+                return [];
+            }
+            return data || [];
+        } catch (err) {
+            console.warn('getReviewsByIndicator failed:', err.message);
+            return [];
+        }
     }
 
     /**
@@ -437,14 +444,21 @@ class SupabaseService {
      * Get pending reviews (admin)
      */
     async getPendingReviews() {
-        const { data, error } = await this.client
-            .from('reviews')
-            .select('*, champions(id, full_name, email), indicators(name), panels(name, category)')
-            .eq('status', 'pending')
-            .eq('is_deleted', false)
-            .order('created_at', { ascending: true });
-        if (error) throw error;
-        return data;
+        try {
+            const { data, error } = await this.client
+                .from('reviews')
+                .select('*, indicators(name), panels(name, category)')
+                .eq('status', 'pending')
+                .order('created_at', { ascending: true });
+            if (error) {
+                console.warn('getPendingReviews error:', error.message);
+                return [];
+            }
+            return data || [];
+        } catch (err) {
+            console.warn('getPendingReviews failed:', err.message);
+            return [];
+        }
     }
 
     /**
@@ -539,27 +553,42 @@ class SupabaseService {
      * Create a comment
      */
     async createComment(commentData) {
-        const { data, error } = await this.client
-            .from('comments')
-            .insert(commentData)
-            .select('*, champions(id, full_name, avatar_url)')
-            .single();
-        if (error) throw error;
-        return data;
+        try {
+            const { data, error } = await this.client
+                .from('comments')
+                .insert(commentData)
+                .select('*')
+                .single();
+            if (error) {
+                console.warn('createComment error:', error.message);
+                return null;
+            }
+            return data;
+        } catch (err) {
+            console.warn('createComment failed:', err.message);
+            return null;
+        }
     }
 
     /**
      * Get comments for a review
      */
     async getComments(reviewId) {
-        const { data, error } = await this.client
-            .from('comments')
-            .select('*, champions(id, full_name, avatar_url)')
-            .eq('review_id', reviewId)
-            .eq('is_deleted', false)
-            .order('created_at', { ascending: true });
-        if (error) throw error;
-        return data;
+        try {
+            const { data, error } = await this.client
+                .from('comments')
+                .select('*')
+                .eq('review_id', reviewId)
+                .order('created_at', { ascending: true });
+            if (error) {
+                console.warn('getComments error:', error.message);
+                return [];
+            }
+            return data || [];
+        } catch (err) {
+            console.warn('getComments failed:', err.message);
+            return [];
+        }
     }
 
     // =====================================================
@@ -673,9 +702,10 @@ class SupabaseService {
      */
     async getAcceptedReviews(options = {}) {
         try {
+            // Simplified query without ambiguous joins
             let query = this.client
                 .from('accepted_reviews')
-                .select('*, champions(id, full_name, avatar_url), indicators(name), panels(name, category)');
+                .select('*, indicators(name), panels(name, category)');
 
             if (options.championId) {
                 query = query.eq('champion_id', options.championId);
