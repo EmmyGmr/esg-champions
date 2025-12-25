@@ -98,132 +98,132 @@
 
         <!-- Dashboard Content -->
         <div class="main-content">
-            <!-- Loading State -->
-            <div id="loading-state" class="flex-center" style="height: 400px;">
-                <div class="loading-spinner"></div>
-            </div>
-
-            <!-- Dashboard Content (hidden until loaded) -->
-            <div id="dashboard-content" class="hidden">
-                <!-- Welcome Header -->
-                <div class="flex-between mb-8">
-                    <div>
-                        <h1 id="welcome-title">Welcome back!</h1>
-                        <p class="text-secondary">Here's your sustainability impact overview</p>
-                    </div>
-                    <a href="/champion-panels.html" class="btn btn-primary">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                        </svg>
-                        Submit Review
-                    </a>
+            <div class="dashboard-container">
+                <!-- Loading State -->
+                <div id="loading-state" class="flex-center" style="height: 400px;">
+                    <div class="loading-spinner"></div>
                 </div>
 
-                <!-- Resume Progress Card -->
-                <div id="resume-card" class="widget hidden" style="background: linear-gradient(135deg, var(--primary-600), var(--primary-700)); color: white; margin-bottom: var(--space-6);">
-                    <div class="widget-body">
-                        <div class="flex-between">
-                            <div>
-                                <h3 style="color: white; margin-bottom: var(--space-2);">Continue Where You Left Off</h3>
-                                <p style="color: var(--primary-100); margin-bottom: 0;" id="resume-description"></p>
-                            </div>
-                            <a href="#" id="resume-link" class="btn btn-accent">Continue</a>
+                <!-- Dashboard Content (hidden until loaded) -->
+                <div id="dashboard-content" class="hidden">
+                    <!-- Welcome Header -->
+                    <div class="flex-between mb-8">
+                        <div>
+                            <h1 id="welcome-title">Welcome back!</h1>
+                            <p class="text-secondary">Here's your sustainability impact overview</p>
                         </div>
+                        <a href="/champion-panels.html" class="btn btn-primary">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            Submit Review
+                        </a>
                     </div>
-                </div>
 
-                <!-- Stats Grid -->
-                <div class="stats-grid mb-8" id="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                            </svg>
-                        </div>
-                        <div class="stat-value" id="stat-credits">0</div>
-                        <div class="stat-label">STIF Credits</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon" style="background: var(--success-bg); color: var(--success);">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                        </div>
-                        <div class="stat-value" id="stat-approved">0</div>
-                        <div class="stat-label">Approved Reviews</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon" style="background: var(--warning-bg); color: var(--warning);">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <polyline points="12 6 12 12 16 14"></polyline>
-                            </svg>
-                        </div>
-                        <div class="stat-value" id="stat-pending">0</div>
-                        <div class="stat-label">Pending Reviews</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon" style="background: var(--social-bg); color: var(--social);">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 20V10"></path>
-                                <path d="M12 20V4"></path>
-                                <path d="M6 20v-6"></path>
-                            </svg>
-                        </div>
-                        <div class="stat-value" id="stat-rank">#--</div>
-                        <div class="stat-label">Your Rank</div>
-                    </div>
-                </div>
-
-                <!-- Content Grid -->
-                <div class="grid" style="grid-template-columns: 2fr 1fr; gap: var(--space-6);">
-                    <!-- Recent Reviews -->
-                    <div class="widget">
-                        <div class="widget-header">
-                            <h3 class="widget-title">Recent Reviews</h3>
-                            <a href="/champion-panels.html" class="btn btn-ghost btn-sm">View All</a>
-                        </div>
+                    <!-- Resume Progress Card -->
+                    <div id="resume-card" class="widget hidden" style="background: linear-gradient(135deg, var(--primary-600), var(--primary-700)); color: white; margin-bottom: var(--space-6);">
                         <div class="widget-body">
-                            <div id="recent-reviews-list">
-                                <p class="text-secondary text-center p-6">No reviews yet. Start by exploring ESG panels!</p>
+                            <div class="flex-between">
+                                <div>
+                                    <h3 style="color: white; margin-bottom: var(--space-2);">Continue Where You Left Off</h3>
+                                    <p style="color: var(--primary-100); margin-bottom: 0;" id="resume-description"></p>
+                                </div>
+                                <a href="#" id="resume-link" class="btn btn-accent">Continue</a>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Quick Actions -->
-                    <div>
+                    <!-- Stats Grid -->
+                    <div class="stats-grid mb-8" id="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                            </div>
+                            <div class="stat-value" id="stat-credits">0</div>
+                            <div class="stat-label">STIF Credits</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: var(--success-bg); color: var(--success);">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </div>
+                            <div class="stat-value" id="stat-approved">0</div>
+                            <div class="stat-label">Approved Reviews</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: var(--warning-bg); color: var(--warning);">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                            </div>
+                            <div class="stat-value" id="stat-pending">0</div>
+                            <div class="stat-label">Pending Reviews</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: var(--social-bg); color: var(--social);">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M18 20V10"></path>
+                                    <path d="M12 20V4"></path>
+                                    <path d="M6 20v-6"></path>
+                                </svg>
+                            </div>
+                            <div class="stat-value" id="stat-rank">#--</div>
+                            <div class="stat-label">Your Rank</div>
+                        </div>
+                    </div>
+
+                    <!-- Content Grid -->
+                    <div class="dashboard-grid">
+                        <!-- Recent Reviews -->
                         <div class="widget">
                             <div class="widget-header">
-                                <h3 class="widget-title">Quick Actions</h3>
+                                <h3 class="widget-title">Recent Reviews</h3>
+                                <a href="/champion-panels.html" class="btn btn-ghost btn-sm">View All</a>
                             </div>
                             <div class="widget-body">
-                                <a href="/champion-panels.html" class="sidebar-link mb-2" style="display: flex;">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
-                                        <path d="M2 17l10 5 10-5"></path>
-                                        <path d="M2 12l10 5 10-5"></path>
-                                    </svg>
-                                    Browse Panels
-                                </a>
-                                <a href="/ranking.html" class="sidebar-link mb-2" style="display: flex;">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M12 20v-6"></path>
-                                        <path d="M6 20V4"></path>
-                                        <path d="M18 20V10"></path>
-                                    </svg>
-                                    View Leaderboard
-                                </a>
-                                <a href="/champion-profile.html" class="sidebar-link" style="display: flex;">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <circle cx="12" cy="12" r="3"></circle>
-                                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-                                    </svg>
-                                    Account Settings
-                                </a>
+                                <div id="recent-reviews-list">
+                                    <p class="text-secondary text-center p-6">No reviews yet. Start by exploring ESG panels!</p>
+                                </div>
                             </div>
                         </div>
 
+                        <!-- Quick Actions -->
+                        <div>
+                            <div class="widget">
+                                <div class="widget-header">
+                                    <h3 class="widget-title">Quick Actions</h3>
+                                </div>
+                                <div class="widget-body">
+                                    <a href="/champion-panels.html" class="sidebar-link mb-2" style="display: flex;">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                                            <path d="M2 17l10 5 10-5"></path>
+                                            <path d="M2 12l10 5 10-5"></path>
+                                        </svg>
+                                        Browse Panels
+                                    </a>
+                                    <a href="/ranking.html" class="sidebar-link mb-2" style="display: flex;">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M12 20v-6"></path>
+                                            <path d="M6 20V4"></path>
+                                            <path d="M18 20V10"></path>
+                                        </svg>
+                                        View Leaderboard
+                                    </a>
+                                    <a href="/champion-profile.html" class="sidebar-link" style="display: flex;">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="3"></circle>
+                                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                                        </svg>
+                                        Account Settings
+                                    </a>
+                                </div>
+                            </div>
                         <!-- STIF Score Card -->
                         <div class="widget mt-6">
                             <div class="widget-header">

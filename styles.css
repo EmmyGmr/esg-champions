@@ -903,13 +903,17 @@ p {
    ===================================================== */
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: var(--space-6);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-4);
+}
+
+.stats-grid > * {
+    min-width: 0;
 }
 
 .stat-card {
     background: white;
-    padding: var(--space-6);
+    padding: var(--space-4);
     border-radius: var(--radius-xl);
     box-shadow: var(--shadow-md);
     text-align: center;
@@ -922,9 +926,9 @@ p {
 }
 
 .stat-icon {
-    width: 48px;
-    height: 48px;
-    margin: 0 auto var(--space-4);
+    width: 36px;
+    height: 36px;
+    margin: 0 auto var(--space-3);
     background: var(--primary-100);
     border-radius: var(--radius-lg);
     display: flex;
@@ -935,7 +939,7 @@ p {
 
 .stat-value {
     font-family: var(--font-display);
-    font-size: var(--text-4xl);
+    font-size: var(--text-2xl);
     font-weight: 700;
     color: var(--gray-900);
     line-height: 1;
@@ -1170,9 +1174,26 @@ p {
     padding: var(--space-8);
     background: var(--gray-50);
     min-height: calc(100vh - 70px);
+    min-width: 0;
+}
+
+.dashboard-container {
     max-width: 1200px;
-    width: calc(100% - 320px);
-    margin-right: auto;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 var(--space-4);
+    box-sizing: border-box;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: var(--space-6);
+    align-items: start;
+}
+
+.dashboard-grid > * {
+    min-width: 0;
 }
 
 /* =====================================================
@@ -1479,6 +1500,16 @@ p {
         max-width: 100%;
         width: 100%;
     }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-5);
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--space-5);
+    }
 }
 
 @media (max-width: 768px) {
@@ -1497,6 +1528,14 @@ p {
     
     .hero-title {
         font-size: var(--text-4xl);
+    }
+
+    .dashboard-container {
+        padding: 0 var(--space-4);
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
     }
     
     .hero-actions {
