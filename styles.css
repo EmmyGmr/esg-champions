@@ -1171,8 +1171,7 @@ p {
 .main-content {
     flex: 1;
     margin-left: 280px;
-    /* Align with header right edge (profile avatar) */
-    margin-right: max(24px, calc((100vw - 1280px) / 2));
+    margin-right: 24px;
     padding: var(--space-8);
     background: var(--gray-50);
     min-height: calc(100vh - 70px);
@@ -1180,10 +1179,8 @@ p {
 }
 
 .dashboard-container {
-    max-width: 1200px;
     width: 100%;
-    margin: 0 auto;
-    padding: 0 var(--space-6);
+    padding: 0;
     box-sizing: border-box;
 }
 
