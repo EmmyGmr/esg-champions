@@ -1170,6 +1170,9 @@ p {
     padding: var(--space-8);
     background: var(--gray-50);
     min-height: calc(100vh - 70px);
+    max-width: 1200px;
+    width: calc(100% - 320px);
+    margin-right: auto;
 }
 
 /* =====================================================
@@ -1473,6 +1476,8 @@ p {
     
     .main-content {
         margin-left: 0;
+        max-width: 100%;
+        width: 100%;
     }
 }
 
