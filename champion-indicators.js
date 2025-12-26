@@ -540,14 +540,26 @@ class ChampionIndicators {
                 analysis: review.analysis || review.content
             }));
 
+            console.log('Submitting panel review with indicator reviews:', indicatorReviews);
+
             // Submit to database - this must succeed before we update any local state
             const result = await window.championDB.createPanelReviewSubmission(
                 this.currentPanelId,
                 indicatorReviews
             );
 
-            // Only if database submission was successful:
-            if (result && result.submission) {
+            console.log('Panel review submission result:', result);
+
+            // Verify both submission AND indicator reviews were saved
+            if (result && result.submission && result.submission.id) {
+                // Check if indicator reviews were actually saved
+                if (!result.indicatorReviews || result.indicatorReviews.length === 0) {
+                    console.error('Submission created but indicator reviews not saved!');
+                    throw new Error('Failed to save indicator reviews. Please try again.');
+                }
+
+                console.log(`Successfully saved ${result.indicatorReviews.length} indicator reviews`);
+
                 // Mark indicators as reviewed in session
                 for (const review of reviewsToSubmit) {
                     this.markIndicatorAsReviewed(review.indicatorId);

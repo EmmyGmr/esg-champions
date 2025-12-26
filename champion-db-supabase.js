@@ -478,21 +478,39 @@ class ChampionDB {
             throw new Error('User must be authenticated');
         }
 
+        if (!indicatorReviews || indicatorReviews.length === 0) {
+            throw new Error('No indicator reviews provided');
+        }
+
         try {
             const userId = auth.getUser().id;
             
+            console.log('Creating panel review submission:', { panelId, userId, reviewCount: indicatorReviews.length });
+            console.log('Indicator reviews data:', indicatorReviews);
+            
             // Create the submission
             const submission = await this.service.createPanelReviewSubmission(panelId, userId);
+            console.log('Submission created:', submission);
+            
+            if (!submission || !submission.id) {
+                throw new Error('Failed to create submission - no ID returned');
+            }
             
             // Add indicator reviews
             const reviews = await this.service.addIndicatorReviewsToSubmission(
                 submission.id,
                 indicatorReviews
             );
+            
+            console.log('Indicator reviews inserted:', reviews);
+            
+            if (!reviews || reviews.length === 0) {
+                console.warn('Warning: No indicator reviews were inserted');
+            }
 
             return {
                 submission,
-                indicatorReviews: reviews
+                indicatorReviews: reviews || []
             };
         } catch (error) {
             console.error('Error creating panel review submission:', error);

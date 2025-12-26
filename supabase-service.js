@@ -835,20 +835,33 @@ class SupabaseService {
      * Add indicator reviews to a submission
      */
     async addIndicatorReviewsToSubmission(submissionId, indicatorReviews) {
+        if (!indicatorReviews || indicatorReviews.length === 0) {
+            console.warn('No indicator reviews to insert');
+            return [];
+        }
+
         const reviewsWithSubmissionId = indicatorReviews.map(review => ({
             submission_id: submissionId,
             indicator_id: review.indicatorId,
-            is_necessary: review.isNecessary,
-            clarity_rating: review.clarityRating,
-            analysis: review.analysis
+            is_necessary: review.isNecessary || 'not_sure',
+            clarity_rating: review.clarityRating || 3,
+            analysis: review.analysis || 'No analysis provided'
         }));
+
+        console.log('Inserting indicator reviews:', reviewsWithSubmissionId);
 
         const { data, error } = await this.client
             .from('panel_review_indicator_reviews')
             .insert(reviewsWithSubmissionId)
             .select('*, indicators(name, description)');
-        if (error) throw error;
-        return data;
+        
+        if (error) {
+            console.error('Error inserting indicator reviews:', error);
+            throw error;
+        }
+        
+        console.log('Inserted indicator reviews result:', data);
+        return data || [];
     }
 
     /**
