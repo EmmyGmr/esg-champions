@@ -74,11 +74,107 @@
             border-bottom: none;
         }
         .methodology-section {
-            background: var(--primary-50);
+            background: var(--gray-50);
             border-radius: var(--radius-lg);
-            padding: var(--space-4);
+            padding: var(--space-5);
+            margin-bottom: var(--space-4);
+            border: 1px solid var(--gray-100);
+        }
+        .methodology-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-4);
+        }
+        .methodology-item {
+            text-align: left;
+        }
+        .methodology-label {
+            font-size: var(--text-xs);
+            color: var(--gray-500);
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: var(--space-1);
+        }
+        .methodology-value {
+            font-size: var(--text-sm);
+            color: var(--gray-800);
+            font-weight: 500;
+        }
+        
+        /* Indicator Metadata Card */
+        .indicator-metadata-card {
+            background: #f0f7ff;
+            border-radius: var(--radius-lg);
+            padding: var(--space-5);
             margin-bottom: var(--space-4);
         }
+        .metadata-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-6);
+        }
+        .metadata-label {
+            font-size: var(--text-sm);
+            color: var(--gray-500);
+            margin-bottom: var(--space-1);
+        }
+        .metadata-value {
+            font-size: var(--text-base);
+            color: var(--gray-800);
+            font-weight: 600;
+        }
+        
+        /* Assessment Section */
+        .assessment-section {
+            padding: var(--space-4) 0;
+            border-bottom: 1px solid var(--gray-100);
+            margin-bottom: var(--space-4);
+        }
+        .radio-group {
+            display: flex;
+            gap: var(--space-6);
+            margin-top: var(--space-2);
+        }
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            cursor: pointer;
+            font-size: var(--text-sm);
+            color: var(--gray-700);
+        }
+        .radio-option input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        
+        /* Clarity Rating */
+        .clarity-rating {
+            display: flex;
+            gap: var(--space-1);
+            margin-top: var(--space-2);
+        }
+        .clarity-star {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            font-size: 24px;
+            color: var(--gray-300);
+            transition: color var(--transition);
+        }
+        .clarity-star .star-icon {
+            color: inherit;
+        }
+        .clarity-star.active,
+        .clarity-star:hover {
+            color: #f59e0b;
+        }
+        .clarity-star.active .star-icon {
+            color: #f59e0b;
+        }
+        
         @media (max-width: 1024px) {
             .indicators-layout {
                 flex-direction: column !important;
@@ -87,6 +183,18 @@
                 width: 100% !important;
                 max-height: 300px;
                 overflow-y: auto;
+            }
+            .metadata-grid {
+                grid-template-columns: 1fr;
+                gap: var(--space-3);
+            }
+            .methodology-grid {
+                grid-template-columns: 1fr;
+                gap: var(--space-3);
+            }
+            .radio-group {
+                flex-direction: column;
+                gap: var(--space-2);
             }
         }
     </style>

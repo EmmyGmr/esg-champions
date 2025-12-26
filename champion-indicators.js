@@ -9,6 +9,7 @@ class ChampionIndicators {
         this.selectedIndicatorIds = [];
         this.selectedIndicator = null;
         this.rating = 0;
+        this.clarityRating = 0;
     }
 
     async init() {
@@ -164,42 +165,106 @@ class ChampionIndicators {
             console.error('Error loading reviews:', error);
         }
 
+        // Default values for metadata
+        const frameworkMapping = indicator.gri_standard || indicator.framework_mapping || 'GRI 305-1 / ISSB S2';
+        const source = indicator.source || 'SME Hub';
+        const sectorContext = indicator.sector_context || 'All';
+
         container.innerHTML = `
             <div class="indicator-header">
-                <h2 style="margin-bottom: var(--space-2);">${indicator.name}</h2>
+                <h2 style="margin-bottom: var(--space-2); color: var(--gray-800);">${indicator.name}</h2>
                 <p class="text-secondary">${indicator.description || 'No description available'}</p>
-                ${indicator.panels ? `<span class="badge badge-${indicator.panels.category}" style="margin-top: var(--space-2);">Panel: ${indicator.panels.name}</span>` : ''}
             </div>
             <div class="indicator-body">
-                ${indicator.methodology ? `
-                    <div class="methodology-section">
-                        <h4 style="margin-bottom: var(--space-2);">Methodology</h4>
-                        <p class="text-secondary" style="font-size: var(--text-sm); margin: 0;">${indicator.methodology}</p>
+                <!-- Metadata Section -->
+                <div class="indicator-metadata-card">
+                    <div class="metadata-grid">
+                        <div class="metadata-item">
+                            <div class="metadata-label">Framework Mapping</div>
+                            <div class="metadata-value">${frameworkMapping}</div>
+                        </div>
+                        <div class="metadata-item">
+                            <div class="metadata-label">Source</div>
+                            <div class="metadata-value">${source}</div>
+                        </div>
                     </div>
-                ` : ''}
-                
-                <div class="grid" style="grid-template-columns: repeat(3, 1fr); gap: var(--space-4); margin-bottom: var(--space-6);">
-                    ${indicator.data_source ? `
-                        <div>
-                            <div class="text-secondary" style="font-size: var(--text-xs); text-transform: uppercase; margin-bottom: var(--space-1);">Data Source</div>
-                            <div class="font-semibold">${indicator.data_source}</div>
-                        </div>
-                    ` : ''}
-                    ${indicator.unit ? `
-                        <div>
-                            <div class="text-secondary" style="font-size: var(--text-xs); text-transform: uppercase; margin-bottom: var(--space-1);">Unit</div>
-                            <div class="font-semibold">${indicator.unit}</div>
-                        </div>
-                    ` : ''}
-                    ${indicator.frequency ? `
-                        <div>
-                            <div class="text-secondary" style="font-size: var(--text-xs); text-transform: uppercase; margin-bottom: var(--space-1);">Frequency</div>
-                            <div class="font-semibold">${indicator.frequency}</div>
-                        </div>
-                    ` : ''}
+                    <div class="metadata-item" style="margin-top: var(--space-3);">
+                        <div class="metadata-label">Sector Context</div>
+                        <div class="metadata-value">${sectorContext}</div>
+                    </div>
                 </div>
 
                 ${isAuthenticated ? `
+                    <!-- Assessment Questions -->
+                    <div class="assessment-section">
+                        <div class="form-group">
+                            <label class="form-label" style="color: var(--gray-700); font-weight: 500;">Is this indicator necessary?</label>
+                            <div class="radio-group">
+                                <label class="radio-option">
+                                    <input type="radio" name="is_necessary" value="yes">
+                                    <span>Yes</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="is_necessary" value="no">
+                                    <span>No</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="is_necessary" value="not_sure">
+                                    <span>Not sure</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" style="color: var(--gray-700); font-weight: 500;">Rate the clarity and relevance</label>
+                            <div class="clarity-rating" id="clarity-rating">
+                                ${[1, 2, 3, 4, 5].map(n => `
+                                    <button type="button" class="clarity-star" data-value="${n}" onclick="indicatorsPage.setClarityRating(${n})">
+                                        <span class="star-icon">☆</span>
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" style="color: var(--gray-700); font-weight: 500;">Comments</label>
+                            <textarea 
+                                id="indicator-comments" 
+                                class="form-textarea" 
+                                placeholder="Enter comments or references...."
+                                rows="4"
+                            ></textarea>
+                        </div>
+                    </div>
+
+                    ${indicator.methodology ? `
+                        <div class="methodology-section">
+                            <h4 style="margin-bottom: var(--space-3); color: var(--gray-700);">Methodology</h4>
+                            <p class="text-secondary" style="font-size: var(--text-sm); margin-bottom: var(--space-4);">${indicator.methodology}</p>
+                            
+                            <div class="methodology-grid">
+                                ${indicator.data_source ? `
+                                    <div class="methodology-item">
+                                        <div class="methodology-label">DATA SOURCE</div>
+                                        <div class="methodology-value">${indicator.data_source}</div>
+                                    </div>
+                                ` : ''}
+                                ${indicator.unit ? `
+                                    <div class="methodology-item">
+                                        <div class="methodology-label">UNIT</div>
+                                        <div class="methodology-value">${indicator.unit}</div>
+                                    </div>
+                                ` : ''}
+                                ${indicator.frequency ? `
+                                    <div class="methodology-item">
+                                        <div class="methodology-label">FREQUENCY</div>
+                                        <div class="methodology-value">${indicator.frequency}</div>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    ` : ''}
+
                     <div class="review-form">
                         <h4 style="margin-bottom: var(--space-4);">Submit Your Review</h4>
                         <form id="review-form" onsubmit="indicatorsPage.submitReview(event)">
@@ -216,7 +281,7 @@ class ChampionIndicators {
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="form-label" for="review-content">Your Analysis</label>
+                                <label class="form-label" for="review-content">Comment</label>
                                 <textarea 
                                     id="review-content" 
                                     class="form-textarea" 
@@ -313,6 +378,21 @@ class ChampionIndicators {
         
         document.querySelectorAll('.rating-star').forEach((star, index) => {
             star.classList.toggle('active', index < value);
+        });
+    }
+
+    setClarityRating(value) {
+        this.clarityRating = value;
+        
+        document.querySelectorAll('.clarity-star').forEach((star, index) => {
+            const starIcon = star.querySelector('.star-icon');
+            if (index < value) {
+                star.classList.add('active');
+                starIcon.textContent = '★';
+            } else {
+                star.classList.remove('active');
+                starIcon.textContent = '☆';
+            }
         });
     }
 
