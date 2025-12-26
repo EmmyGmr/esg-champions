@@ -283,28 +283,60 @@ class ChampionDB {
         const championId = auth.getUser().id;
 
         try {
-            const [champion, reviews, acceptedReviews, resumePoint] = await Promise.all([
+            const [champion, reviews, acceptedReviews, resumePoint, panelSubmissions] = await Promise.all([
                 this.service.getChampion(championId),
                 this.service.getReviewsByChampion(championId),
                 this.service.getAcceptedReviews({ championId }),
-                this.service.getResumePoint(championId)
+                this.service.getResumePoint(championId),
+                this.service.getUserPanelReviewSubmissions(championId)
             ]);
 
-            const pendingReviews = reviews.filter(r => r.status === 'pending');
-            const approvedReviews = reviews.filter(r => r.status === 'approved');
-            const rejectedReviews = reviews.filter(r => r.status === 'rejected');
+            // Get indicator reviews from panel submissions
+            let panelIndicatorReviews = [];
+            if (panelSubmissions && panelSubmissions.length > 0) {
+                for (const submission of panelSubmissions) {
+                    try {
+                        const fullSubmission = await this.service.getSubmissionWithIndicatorReviews(submission.id);
+                        if (fullSubmission && fullSubmission.indicatorReviews) {
+                            // Map panel reviews to match the format expected by the dashboard
+                            const mappedReviews = fullSubmission.indicatorReviews.map(review => ({
+                                id: review.id,
+                                status: submission.status, // Use submission status
+                                created_at: review.created_at || submission.created_at,
+                                indicators: review.indicators,
+                                panels: fullSubmission.panels,
+                                rating: review.clarity_rating,
+                                content: review.analysis
+                            }));
+                            panelIndicatorReviews.push(...mappedReviews);
+                        }
+                    } catch (err) {
+                        console.warn('Error fetching submission details:', err);
+                    }
+                }
+            }
+
+            // Combine old reviews and panel reviews
+            const allReviews = [...reviews, ...panelIndicatorReviews];
+            
+            // Sort by created_at descending
+            allReviews.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+            const pendingReviews = allReviews.filter(r => r.status === 'pending');
+            const approvedReviews = allReviews.filter(r => r.status === 'approved');
+            const rejectedReviews = allReviews.filter(r => r.status === 'rejected');
 
             return {
                 champion,
                 stats: {
-                    totalReviews: reviews.length,
+                    totalReviews: allReviews.length,
                     pendingReviews: pendingReviews.length,
                     approvedReviews: approvedReviews.length,
                     rejectedReviews: rejectedReviews.length,
                     credits: champion.credits || 0,
                     acceptedReviewsCount: acceptedReviews.length
                 },
-                recentReviews: reviews.slice(0, 5),
+                recentReviews: allReviews.slice(0, 5),
                 resumePoint
             };
         } catch (error) {
