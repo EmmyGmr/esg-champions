@@ -1296,7 +1296,8 @@ p {
 
 .main-content {
     flex: 1;
-    margin-left: 280px;
+    /* Sidebar width (280px) + gap (24px) = 304px */
+    margin-left: 304px;
     /* Align right edge with header-inner's right edge (1200px centered container) */
     margin-right: max(20px, calc((100vw - 1200px) / 2));
     /* Same horizontal padding as header-inner (20px) for content alignment with avatar */
