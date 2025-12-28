@@ -3,6 +3,15 @@
 -- Run this migration in Supabase SQL Editor
 -- =====================================================
 
+-- First, create the update_updated_at_column function if it doesn't exist
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = NOW();
+    RETURN NEW;
+END;
+$$ language 'plpgsql';
+
 -- Add code column for indicator codes (GRI 305-1, ESRS E1-1, etc.)
 ALTER TABLE indicators 
 ADD COLUMN IF NOT EXISTS code TEXT;
