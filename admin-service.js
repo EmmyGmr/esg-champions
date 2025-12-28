@@ -211,6 +211,25 @@ class AdminService {
         return data;
     }
 
+    /**
+     * Permanently delete an indicator from the database
+     */
+    async permanentlyDeleteIndicator(indicatorId) {
+        const client = window.getSupabase();
+        
+        const { data, error } = await client
+            .from('indicators')
+            .delete()
+            .eq('id', indicatorId)
+            .select()
+            .single();
+
+        if (error) throw error;
+        
+        await this.logAction('permanent_delete_indicator', 'indicator', indicatorId);
+        return data;
+    }
+
     // =====================================================
     // CHAMPIONS
     // =====================================================

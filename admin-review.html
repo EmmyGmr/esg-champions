@@ -559,8 +559,426 @@
         </div>
     </div>
 
+    <!-- Add Indicator Modal -->
+    <div class="modal-backdrop" id="add-indicator-modal-backdrop">
+        <div class="modal" id="add-indicator-modal" style="max-width: 700px; max-height: 90vh;">
+            <div class="modal-header">
+                <h3 class="modal-title">Add Indicator</h3>
+                <button class="modal-close" id="add-indicator-modal-close">&times;</button>
+            </div>
+            <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                <form id="add-indicator-form">
+                    <!-- Panel -->
+                    <div class="form-group">
+                        <label class="form-label">Panel <span style="color: var(--error);">*</span></label>
+                        <select class="form-select" id="indicator-panel" name="panelId" required>
+                            <option value="">Select panel</option>
+                        </select>
+                        <span class="form-error" id="indicator-panel-error"></span>
+                    </div>
+
+                    <!-- Unit + Formula Required -->
+                    <div style="display: grid; grid-template-columns: 1fr auto; gap: var(--space-4); align-items: end;">
+                        <div class="form-group">
+                            <label class="form-label">Unit</label>
+                            <input type="text" class="form-input" id="indicator-unit" name="unit" placeholder="e.g., tCO2e, kWh">
+                        </div>
+                        <div class="form-group">
+                            <label style="display: flex; align-items: center; gap: var(--space-2); cursor: pointer; padding: var(--space-3) 0;">
+                                <input type="checkbox" id="indicator-formula-required" name="formulaRequired">
+                                <span>Formula Required</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Indicator Title -->
+                    <div class="form-group">
+                        <label class="form-label">Indicator Title <span style="color: var(--error);">*</span></label>
+                        <input type="text" class="form-input" id="indicator-title" name="title" placeholder="e.g., Scope 1 GHG Emissions (Tonnes CO₂e)" required>
+                        <span class="form-error" id="indicator-title-error"></span>
+                    </div>
+
+                    <!-- Indicator Code -->
+                    <div class="form-group">
+                        <label class="form-label">Indicator Code</label>
+                        <input type="text" class="form-input" id="indicator-code" name="code" placeholder="e.g., GRI 305-1, ESRS E1-1, SASB RT-CH-110a.1">
+                    </div>
+
+                    <!-- Primary Framework -->
+                    <div class="form-group">
+                        <label class="form-label">Primary Framework</label>
+                        <select class="form-select" id="indicator-framework" name="primaryFramework">
+                            <option value="">Select framework</option>
+                            <option value="GRI">GRI</option>
+                            <option value="ESRS">ESRS</option>
+                            <option value="SASB">SASB</option>
+                            <option value="SME Hub">SME Hub</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <!-- Framework Version -->
+                    <div class="form-group">
+                        <label class="form-label">Framework Version</label>
+                        <input type="text" class="form-input" id="indicator-framework-version" name="frameworkVersion" placeholder="e.g., 2021 Update">
+                    </div>
+
+                    <!-- Description -->
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-textarea" id="indicator-description" name="description" placeholder="Short description of what this indicator measures." rows="3"></textarea>
+                    </div>
+
+                    <!-- Why It Matters to SMEs -->
+                    <div class="form-group">
+                        <label class="form-label">Why It Matters to SMEs</label>
+                        <textarea class="form-textarea" id="indicator-why-matters" name="whyItMatters" placeholder="Explain why this indicator is important for SMEs and how it supports their sustainability journey." rows="3"></textarea>
+                    </div>
+
+                    <!-- Impact Level -->
+                    <div class="form-group">
+                        <label class="form-label">Impact Level</label>
+                        <select class="form-select" id="indicator-impact" name="impactLevel">
+                            <option value="">Select impact level</option>
+                            <option value="High">High</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Foundational">Foundational</option>
+                        </select>
+                    </div>
+
+                    <!-- Difficulty Level -->
+                    <div class="form-group">
+                        <label class="form-label">Difficulty Level</label>
+                        <select class="form-select" id="indicator-difficulty" name="difficultyLevel">
+                            <option value="">Select how difficult it is for SMEs to report on this indicator</option>
+                            <option value="Easy">Easy</option>
+                            <option value="Moderate">Moderate</option>
+                            <option value="Complex">Complex</option>
+                        </select>
+                    </div>
+
+                    <!-- Estimated Time to Validate -->
+                    <div class="form-group">
+                        <label class="form-label">Estimated Time to Validate</label>
+                        <input type="text" class="form-input" id="indicator-estimated-time" name="estimatedTime" placeholder="e.g., 3–5 minutes">
+                    </div>
+
+                    <!-- ESG Class -->
+                    <div class="form-group">
+                        <label class="form-label">ESG Class</label>
+                        <select class="form-select" id="indicator-esg-class" name="esgClass">
+                            <option value="">Select ESG classification</option>
+                            <option value="Environment">Environment</option>
+                            <option value="Social">Social</option>
+                            <option value="Governance">Governance</option>
+                        </select>
+                    </div>
+
+                    <!-- Related SDGs -->
+                    <div class="form-group">
+                        <label class="form-label">Related SDG(s)</label>
+                        <select class="form-select" id="indicator-sdgs" name="relatedSdgs" multiple size="6" style="height: auto;">
+                            <option value="SDG 1">SDG 1 – No Poverty</option>
+                            <option value="SDG 2">SDG 2 – Zero Hunger</option>
+                            <option value="SDG 3">SDG 3 – Good Health and Well-Being</option>
+                            <option value="SDG 4">SDG 4 – Quality Education</option>
+                            <option value="SDG 5">SDG 5 – Gender Equality</option>
+                            <option value="SDG 6">SDG 6 – Clean Water and Sanitation</option>
+                            <option value="SDG 7">SDG 7 – Affordable and Clean Energy</option>
+                            <option value="SDG 8">SDG 8 – Decent Work and Economic Growth</option>
+                            <option value="SDG 9">SDG 9 – Industry, Innovation and Infrastructure</option>
+                            <option value="SDG 10">SDG 10 – Reduced Inequalities</option>
+                            <option value="SDG 11">SDG 11 – Sustainable Cities and Communities</option>
+                            <option value="SDG 12">SDG 12 – Responsible Consumption and Production</option>
+                            <option value="SDG 13">SDG 13 – Climate Action</option>
+                            <option value="SDG 14">SDG 14 – Life Below Water</option>
+                            <option value="SDG 15">SDG 15 – Life on Land</option>
+                            <option value="SDG 16">SDG 16 – Peace, Justice and Strong Institutions</option>
+                            <option value="SDG 17">SDG 17 – Partnerships for the Goals</option>
+                        </select>
+                        <p class="form-helper">Hold <strong>Cmd (Mac)</strong> or <strong>Ctrl (Windows)</strong> to select multiple SDGs.</p>
+                    </div>
+
+                    <!-- Indicator Validation Question -->
+                    <div class="form-group">
+                        <label class="form-label">Indicator Validation Question</label>
+                        <textarea class="form-textarea" id="indicator-validation-question" name="validationQuestion" placeholder="Enter the question the ESG Champion must answer to validate this indicator." rows="2"></textarea>
+                    </div>
+
+                    <!-- Response Type -->
+                    <div class="form-group">
+                        <label class="form-label">Response Type</label>
+                        <select class="form-select" id="indicator-response-type" name="responseType">
+                            <option value="">Choose the response format</option>
+                            <option value="Multiple Choice">Multiple Choice</option>
+                            <option value="Yes-No">Yes–No</option>
+                            <option value="Short Text">Short Text</option>
+                            <option value="Long Text">Long Text</option>
+                        </select>
+                    </div>
+
+                    <!-- Indicator Tags -->
+                    <div class="form-group">
+                        <label class="form-label">Indicator Tags (Optional)</label>
+                        <input type="text" class="form-input" id="indicator-tags" name="tags" placeholder="e.g., emissions, water use, SME reporting, data availability...">
+                    </div>
+
+                    <!-- Icon / Unicode -->
+                    <div class="form-group">
+                        <label class="form-label">Icon / Unicode (Optional)</label>
+                        <input type="text" class="form-input" id="indicator-icon" name="icon" placeholder="Select icon or enter Unicode character">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="display: flex; justify-content: flex-start; gap: var(--space-3);">
+                <button type="button" class="btn btn-primary" id="save-indicator-btn">Save Indicator</button>
+                <button type="button" class="btn btn-secondary" id="cancel-indicator-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Indicator Modal -->
+    <div class="modal-backdrop" id="edit-indicator-modal-backdrop">
+        <div class="modal" id="edit-indicator-modal" style="max-width: 700px; max-height: 90vh;">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Indicator</h3>
+                <button class="modal-close" id="edit-indicator-modal-close">&times;</button>
+            </div>
+            <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                <form id="edit-indicator-form">
+                    <input type="hidden" id="edit-indicator-id" name="id">
+                    
+                    <!-- Panel -->
+                    <div class="form-group">
+                        <label class="form-label">Panel <span style="color: var(--error);">*</span></label>
+                        <select class="form-select" id="edit-indicator-panel" name="panelId" required>
+                            <option value="">Select panel</option>
+                        </select>
+                        <span class="form-error" id="edit-indicator-panel-error"></span>
+                    </div>
+
+                    <!-- Unit + Formula Required -->
+                    <div style="display: grid; grid-template-columns: 1fr auto; gap: var(--space-4); align-items: end;">
+                        <div class="form-group">
+                            <label class="form-label">Unit</label>
+                            <input type="text" class="form-input" id="edit-indicator-unit" name="unit" placeholder="e.g., tCO2e, kWh">
+                        </div>
+                        <div class="form-group">
+                            <label style="display: flex; align-items: center; gap: var(--space-2); cursor: pointer; padding: var(--space-3) 0;">
+                                <input type="checkbox" id="edit-indicator-formula-required" name="formulaRequired">
+                                <span>Formula Required</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Indicator Title -->
+                    <div class="form-group">
+                        <label class="form-label">Indicator Title <span style="color: var(--error);">*</span></label>
+                        <input type="text" class="form-input" id="edit-indicator-title" name="title" placeholder="e.g., Scope 1 GHG Emissions (Tonnes CO₂e)" required>
+                        <span class="form-error" id="edit-indicator-title-error"></span>
+                    </div>
+
+                    <!-- Indicator Code -->
+                    <div class="form-group">
+                        <label class="form-label">Indicator Code</label>
+                        <input type="text" class="form-input" id="edit-indicator-code" name="code" placeholder="e.g., GRI 305-1, ESRS E1-1, SASB RT-CH-110a.1">
+                    </div>
+
+                    <!-- Primary Framework -->
+                    <div class="form-group">
+                        <label class="form-label">Primary Framework</label>
+                        <select class="form-select" id="edit-indicator-framework" name="primaryFramework">
+                            <option value="">Select framework</option>
+                            <option value="GRI">GRI</option>
+                            <option value="ESRS">ESRS</option>
+                            <option value="SASB">SASB</option>
+                            <option value="SME Hub">SME Hub</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <!-- Framework Version -->
+                    <div class="form-group">
+                        <label class="form-label">Framework Version</label>
+                        <input type="text" class="form-input" id="edit-indicator-framework-version" name="frameworkVersion" placeholder="e.g., 2021 Update">
+                    </div>
+
+                    <!-- Description -->
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-textarea" id="edit-indicator-description" name="description" placeholder="Short description of what this indicator measures." rows="3"></textarea>
+                    </div>
+
+                    <!-- Why It Matters to SMEs -->
+                    <div class="form-group">
+                        <label class="form-label">Why It Matters to SMEs</label>
+                        <textarea class="form-textarea" id="edit-indicator-why-matters" name="whyItMatters" placeholder="Explain why this indicator is important for SMEs and how it supports their sustainability journey." rows="3"></textarea>
+                    </div>
+
+                    <!-- Impact Level -->
+                    <div class="form-group">
+                        <label class="form-label">Impact Level</label>
+                        <select class="form-select" id="edit-indicator-impact" name="impactLevel">
+                            <option value="">Select impact level</option>
+                            <option value="High">High</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Foundational">Foundational</option>
+                        </select>
+                    </div>
+
+                    <!-- Difficulty Level -->
+                    <div class="form-group">
+                        <label class="form-label">Difficulty Level</label>
+                        <select class="form-select" id="edit-indicator-difficulty" name="difficultyLevel">
+                            <option value="">Select how difficult it is for SMEs to report on this indicator</option>
+                            <option value="Easy">Easy</option>
+                            <option value="Moderate">Moderate</option>
+                            <option value="Complex">Complex</option>
+                        </select>
+                    </div>
+
+                    <!-- Estimated Time to Validate -->
+                    <div class="form-group">
+                        <label class="form-label">Estimated Time to Validate</label>
+                        <input type="text" class="form-input" id="edit-indicator-estimated-time" name="estimatedTime" placeholder="e.g., 3–5 minutes">
+                    </div>
+
+                    <!-- ESG Class -->
+                    <div class="form-group">
+                        <label class="form-label">ESG Class</label>
+                        <select class="form-select" id="edit-indicator-esg-class" name="esgClass">
+                            <option value="">Select ESG classification</option>
+                            <option value="Environment">Environment</option>
+                            <option value="Social">Social</option>
+                            <option value="Governance">Governance</option>
+                        </select>
+                    </div>
+
+                    <!-- Related SDGs -->
+                    <div class="form-group">
+                        <label class="form-label">Related SDG(s)</label>
+                        <select class="form-select" id="edit-indicator-sdgs" name="relatedSdgs" multiple size="6" style="height: auto;">
+                            <option value="SDG 1">SDG 1 – No Poverty</option>
+                            <option value="SDG 2">SDG 2 – Zero Hunger</option>
+                            <option value="SDG 3">SDG 3 – Good Health and Well-Being</option>
+                            <option value="SDG 4">SDG 4 – Quality Education</option>
+                            <option value="SDG 5">SDG 5 – Gender Equality</option>
+                            <option value="SDG 6">SDG 6 – Clean Water and Sanitation</option>
+                            <option value="SDG 7">SDG 7 – Affordable and Clean Energy</option>
+                            <option value="SDG 8">SDG 8 – Decent Work and Economic Growth</option>
+                            <option value="SDG 9">SDG 9 – Industry, Innovation and Infrastructure</option>
+                            <option value="SDG 10">SDG 10 – Reduced Inequalities</option>
+                            <option value="SDG 11">SDG 11 – Sustainable Cities and Communities</option>
+                            <option value="SDG 12">SDG 12 – Responsible Consumption and Production</option>
+                            <option value="SDG 13">SDG 13 – Climate Action</option>
+                            <option value="SDG 14">SDG 14 – Life Below Water</option>
+                            <option value="SDG 15">SDG 15 – Life on Land</option>
+                            <option value="SDG 16">SDG 16 – Peace, Justice and Strong Institutions</option>
+                            <option value="SDG 17">SDG 17 – Partnerships for the Goals</option>
+                        </select>
+                        <p class="form-helper">Hold <strong>Cmd (Mac)</strong> or <strong>Ctrl (Windows)</strong> to select multiple SDGs.</p>
+                    </div>
+
+                    <!-- Indicator Validation Question -->
+                    <div class="form-group">
+                        <label class="form-label">Indicator Validation Question</label>
+                        <textarea class="form-textarea" id="edit-indicator-validation-question" name="validationQuestion" placeholder="Enter the question the ESG Champion must answer to validate this indicator." rows="2"></textarea>
+                    </div>
+
+                    <!-- Response Type -->
+                    <div class="form-group">
+                        <label class="form-label">Response Type</label>
+                        <select class="form-select" id="edit-indicator-response-type" name="responseType">
+                            <option value="">Choose the response format</option>
+                            <option value="Multiple Choice">Multiple Choice</option>
+                            <option value="Yes-No">Yes–No</option>
+                            <option value="Short Text">Short Text</option>
+                            <option value="Long Text">Long Text</option>
+                        </select>
+                    </div>
+
+                    <!-- Indicator Tags -->
+                    <div class="form-group">
+                        <label class="form-label">Indicator Tags (Optional)</label>
+                        <input type="text" class="form-input" id="edit-indicator-tags" name="tags" placeholder="e.g., emissions, water use, SME reporting, data availability...">
+                    </div>
+
+                    <!-- Icon / Unicode -->
+                    <div class="form-group">
+                        <label class="form-label">Icon / Unicode (Optional)</label>
+                        <input type="text" class="form-input" id="edit-indicator-icon" name="icon" placeholder="Select icon or enter Unicode character">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="display: flex; justify-content: space-between; gap: var(--space-3);">
+                <div style="display: flex; gap: var(--space-2);">
+                    <button type="button" class="btn btn-error" id="delete-indicator-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                        Delete
+                    </button>
+                    <button type="button" class="btn" id="toggle-indicator-visibility-btn" style="background: var(--gray-100); color: var(--gray-700);">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="indicator-visibility-icon">
+                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                            <line x1="1" y1="1" x2="23" y2="23"></line>
+                        </svg>
+                        <span id="indicator-visibility-btn-text">Hide</span>
+                    </button>
+                </div>
+                <div style="display: flex; gap: var(--space-3);">
+                    <button type="button" class="btn btn-secondary" id="cancel-edit-indicator-btn">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="update-indicator-btn">Update Indicator</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Indicator Confirmation Modal -->
+    <div class="modal-backdrop" id="delete-indicator-confirm-modal-backdrop">
+        <div class="modal" id="delete-indicator-confirm-modal" style="max-width: 450px;">
+            <div class="modal-header" style="border-bottom: none; padding-bottom: 0;">
+                <h3 class="modal-title" style="color: var(--error);">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: var(--space-2);">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    Confirm Deletion
+                </h3>
+                <button class="modal-close" id="delete-indicator-confirm-modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom: var(--space-4);">
+                    You are about to delete the indicator: <strong id="delete-indicator-name"></strong>
+                </p>
+                <p class="text-secondary" style="margin-bottom: var(--space-4); font-size: var(--text-sm);">
+                    <strong style="color: var(--error);">Warning:</strong> This action will permanently delete this indicator from the database. This action <strong>cannot be undone</strong>.
+                </p>
+                <p class="text-secondary" style="margin-bottom: var(--space-4); font-size: var(--text-sm);">
+                    💡 <em>Tip: To hide an indicator without deleting it, use the "Hide" button instead.</em>
+                </p>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label">Type <strong>"DELETE"</strong> to confirm:</label>
+                    <input type="text" class="form-input" id="delete-indicator-confirm-input" placeholder="Type DELETE here" autocomplete="off">
+                    <span class="form-error" id="delete-indicator-confirm-error"></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="delete-indicator-confirm-cancel-btn">Cancel</button>
+                <button type="button" class="btn btn-error" id="delete-indicator-confirm-btn" disabled>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                    Delete Indicator
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Delete Confirmation Modal -->
-    <div class="modal-backdrop" id="delete-confirm-modal-backdrop">
         <div class="modal" id="delete-confirm-modal" style="max-width: 450px;">
             <div class="modal-header" style="border-bottom: none; padding-bottom: 0;">
                 <h3 class="modal-title" style="color: var(--error);">

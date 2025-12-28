@@ -11,6 +11,8 @@ class AdminReviewPage {
         this.selectedReview = null;
         this.selectedPanelReview = null;
         this.currentEditingPanel = null;
+        this.currentEditingIndicator = null;
+        this.panelsList = [];
     }
 
     async init() {
@@ -479,6 +481,9 @@ class AdminReviewPage {
                 this.closeAddPanelModal();
                 this.closeEditPanelModal();
                 this.closeDeleteConfirmModal();
+                this.closeAddIndicatorModal();
+                this.closeEditIndicatorModal();
+                this.closeDeleteIndicatorConfirmModal();
             }
         });
 
@@ -563,6 +568,118 @@ class AdminReviewPage {
                 if (isValid) {
                     document.getElementById('delete-confirm-error').textContent = '';
                 }
+            });
+        }
+
+        // =====================================================
+        // INDICATOR MODAL EVENT LISTENERS
+        // =====================================================
+
+        // Add Indicator Modal
+        const addIndicatorBtn = document.getElementById('add-indicator-btn');
+        const addIndicatorModalClose = document.getElementById('add-indicator-modal-close');
+        const addIndicatorModalBackdrop = document.getElementById('add-indicator-modal-backdrop');
+        const saveIndicatorBtn = document.getElementById('save-indicator-btn');
+        const cancelIndicatorBtn = document.getElementById('cancel-indicator-btn');
+
+        if (addIndicatorBtn) {
+            addIndicatorBtn.addEventListener('click', () => this.openAddIndicatorModal());
+        }
+        if (addIndicatorModalClose) {
+            addIndicatorModalClose.addEventListener('click', () => this.closeAddIndicatorModal());
+        }
+        if (addIndicatorModalBackdrop) {
+            addIndicatorModalBackdrop.addEventListener('click', (e) => {
+                if (e.target === addIndicatorModalBackdrop) {
+                    this.closeAddIndicatorModal();
+                }
+            });
+        }
+        if (saveIndicatorBtn) {
+            saveIndicatorBtn.addEventListener('click', () => this.saveIndicator());
+        }
+        if (cancelIndicatorBtn) {
+            cancelIndicatorBtn.addEventListener('click', () => this.closeAddIndicatorModal());
+        }
+
+        // Edit Indicator Modal
+        const editIndicatorModalClose = document.getElementById('edit-indicator-modal-close');
+        const editIndicatorModalBackdrop = document.getElementById('edit-indicator-modal-backdrop');
+        const updateIndicatorBtn = document.getElementById('update-indicator-btn');
+        const cancelEditIndicatorBtn = document.getElementById('cancel-edit-indicator-btn');
+        const deleteIndicatorBtn = document.getElementById('delete-indicator-btn');
+        const toggleIndicatorVisibilityBtn = document.getElementById('toggle-indicator-visibility-btn');
+
+        if (editIndicatorModalClose) {
+            editIndicatorModalClose.addEventListener('click', () => this.closeEditIndicatorModal());
+        }
+        if (editIndicatorModalBackdrop) {
+            editIndicatorModalBackdrop.addEventListener('click', (e) => {
+                if (e.target === editIndicatorModalBackdrop) {
+                    this.closeEditIndicatorModal();
+                }
+            });
+        }
+        if (updateIndicatorBtn) {
+            updateIndicatorBtn.addEventListener('click', () => this.updateIndicator());
+        }
+        if (cancelEditIndicatorBtn) {
+            cancelEditIndicatorBtn.addEventListener('click', () => this.closeEditIndicatorModal());
+        }
+        if (deleteIndicatorBtn) {
+            deleteIndicatorBtn.addEventListener('click', () => this.deleteCurrentIndicator());
+        }
+        if (toggleIndicatorVisibilityBtn) {
+            toggleIndicatorVisibilityBtn.addEventListener('click', () => this.toggleIndicatorVisibility());
+        }
+
+        // Delete Indicator Confirmation Modal
+        const deleteIndicatorConfirmModalClose = document.getElementById('delete-indicator-confirm-modal-close');
+        const deleteIndicatorConfirmModalBackdrop = document.getElementById('delete-indicator-confirm-modal-backdrop');
+        const deleteIndicatorConfirmCancelBtn = document.getElementById('delete-indicator-confirm-cancel-btn');
+        const deleteIndicatorConfirmBtn = document.getElementById('delete-indicator-confirm-btn');
+        const deleteIndicatorConfirmInput = document.getElementById('delete-indicator-confirm-input');
+
+        if (deleteIndicatorConfirmModalClose) {
+            deleteIndicatorConfirmModalClose.addEventListener('click', () => this.closeDeleteIndicatorConfirmModal());
+        }
+        if (deleteIndicatorConfirmModalBackdrop) {
+            deleteIndicatorConfirmModalBackdrop.addEventListener('click', (e) => {
+                if (e.target === deleteIndicatorConfirmModalBackdrop) {
+                    this.closeDeleteIndicatorConfirmModal();
+                }
+            });
+        }
+        if (deleteIndicatorConfirmCancelBtn) {
+            deleteIndicatorConfirmCancelBtn.addEventListener('click', () => this.closeDeleteIndicatorConfirmModal());
+        }
+        if (deleteIndicatorConfirmBtn) {
+            deleteIndicatorConfirmBtn.addEventListener('click', () => this.confirmDeleteIndicator());
+        }
+        if (deleteIndicatorConfirmInput) {
+            deleteIndicatorConfirmInput.addEventListener('input', (e) => {
+                const isValid = e.target.value.toUpperCase() === 'DELETE';
+                deleteIndicatorConfirmBtn.disabled = !isValid;
+                if (isValid) {
+                    document.getElementById('delete-indicator-confirm-error').textContent = '';
+                }
+            });
+        }
+
+        // Clear validation errors on input for indicator forms
+        const addIndicatorForm = document.getElementById('add-indicator-form');
+        if (addIndicatorForm) {
+            addIndicatorForm.querySelectorAll('input, select, textarea').forEach(field => {
+                field.addEventListener('input', () => this.clearFieldError(field));
+                field.addEventListener('change', () => this.clearFieldError(field));
+            });
+        }
+
+        const editIndicatorForm = document.getElementById('edit-indicator-form');
+        if (editIndicatorForm) {
+            editIndicatorForm.querySelectorAll('input, select, textarea').forEach(field => {
+                field.addEventListener('input', () => this.clearFieldError(field));
+                field.addEventListener('change', () => this.clearFieldError(field));
             });
         }
     }
@@ -1408,6 +1525,483 @@ class AdminReviewPage {
                 saveBtn.disabled = false;
                 saveBtn.innerHTML = 'Save Panel';
             }
+        }
+    }
+
+    // =====================================================
+    // ADD INDICATOR MODAL
+    // =====================================================
+
+    async openAddIndicatorModal() {
+        const backdrop = document.getElementById('add-indicator-modal-backdrop');
+        const modal = document.getElementById('add-indicator-modal');
+        
+        if (backdrop && modal) {
+            // Load panels for the dropdown
+            await this.populatePanelDropdowns();
+            
+            backdrop.classList.add('active');
+            modal.classList.add('active');
+            
+            // Focus first input
+            setTimeout(() => document.getElementById('indicator-panel').focus(), 100);
+        }
+    }
+
+    closeAddIndicatorModal() {
+        const backdrop = document.getElementById('add-indicator-modal-backdrop');
+        const modal = document.getElementById('add-indicator-modal');
+        
+        if (backdrop && modal) {
+            backdrop.classList.remove('active');
+            modal.classList.remove('active');
+            this.resetAddIndicatorForm();
+        }
+    }
+
+    resetAddIndicatorForm() {
+        const form = document.getElementById('add-indicator-form');
+        if (form) {
+            form.reset();
+            form.querySelectorAll('.form-input, .form-select, .form-textarea').forEach(field => {
+                field.classList.remove('error');
+            });
+            form.querySelectorAll('.form-error').forEach(error => {
+                error.textContent = '';
+            });
+        }
+    }
+
+    async populatePanelDropdowns() {
+        try {
+            this.panelsList = await window.adminService.getAllPanels();
+            
+            const addDropdown = document.getElementById('indicator-panel');
+            const editDropdown = document.getElementById('edit-indicator-panel');
+            
+            const optionsHtml = this.panelsList.map(panel => 
+                `<option value="${panel.id}">${panel.name}</option>`
+            ).join('');
+            
+            if (addDropdown) {
+                addDropdown.innerHTML = '<option value="">Select panel</option>' + optionsHtml;
+            }
+            if (editDropdown) {
+                editDropdown.innerHTML = '<option value="">Select panel</option>' + optionsHtml;
+            }
+        } catch (error) {
+            console.error('Error loading panels for dropdown:', error);
+        }
+    }
+
+    validateAddIndicatorForm() {
+        const requiredFields = [
+            { id: 'indicator-panel', label: 'Panel' },
+            { id: 'indicator-title', label: 'Indicator Title' }
+        ];
+
+        let isValid = true;
+
+        requiredFields.forEach(({ id, label }) => {
+            const field = document.getElementById(id);
+            if (!field || !field.value.trim()) {
+                this.showFieldError(id, `${label} is required`);
+                isValid = false;
+            } else {
+                this.clearFieldError(field);
+            }
+        });
+
+        return isValid;
+    }
+
+    async saveIndicator() {
+        if (!this.validateAddIndicatorForm()) {
+            return;
+        }
+
+        const saveBtn = document.getElementById('save-indicator-btn');
+        if (saveBtn) {
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<span class="loading-spinner-sm" style="width: 16px; height: 16px; margin-right: var(--space-2);"></span> Saving...';
+        }
+
+        try {
+            // Collect form values
+            const indicatorData = {
+                panel_id: document.getElementById('indicator-panel').value,
+                name: document.getElementById('indicator-title').value.trim(),
+                unit: document.getElementById('indicator-unit').value.trim() || null,
+                formula_required: document.getElementById('indicator-formula-required').checked,
+                code: document.getElementById('indicator-code').value.trim() || null,
+                primary_framework: document.getElementById('indicator-framework').value || null,
+                framework_version: document.getElementById('indicator-framework-version').value.trim() || null,
+                description: document.getElementById('indicator-description').value.trim() || null,
+                why_it_matters: document.getElementById('indicator-why-matters').value.trim() || null,
+                impact_level: document.getElementById('indicator-impact').value || null,
+                difficulty_level: document.getElementById('indicator-difficulty').value || null,
+                estimated_time: document.getElementById('indicator-estimated-time').value.trim() || null,
+                esg_class: document.getElementById('indicator-esg-class').value || null,
+                validation_question: document.getElementById('indicator-validation-question').value.trim() || null,
+                response_type: document.getElementById('indicator-response-type').value || null,
+                tags: document.getElementById('indicator-tags').value.trim() || null,
+                icon: document.getElementById('indicator-icon').value.trim() || null,
+                is_active: true,
+                order_index: 0
+            };
+
+            // Get selected SDGs
+            const sdgsSelect = document.getElementById('indicator-sdgs');
+            const relatedSdgs = Array.from(sdgsSelect.selectedOptions).map(opt => opt.value);
+            indicatorData.related_sdgs = relatedSdgs.length > 0 ? relatedSdgs : null;
+
+            // Save via admin service
+            await window.adminService.createIndicator(indicatorData);
+
+            window.showToast?.('Indicator created successfully!', 'success');
+            
+            this.closeAddIndicatorModal();
+
+            if (this.currentTab === 'indicators') {
+                await this.loadIndicators();
+            }
+
+        } catch (error) {
+            console.error('Error creating indicator:', error);
+            window.showToast?.('Failed to create indicator. Please try again.', 'error');
+        } finally {
+            if (saveBtn) {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = 'Save Indicator';
+            }
+        }
+    }
+
+    // =====================================================
+    // EDIT INDICATOR MODAL
+    // =====================================================
+
+    async editIndicator(indicatorId) {
+        const backdrop = document.getElementById('edit-indicator-modal-backdrop');
+        const modal = document.getElementById('edit-indicator-modal');
+        
+        if (!backdrop || !modal) return;
+
+        backdrop.classList.add('active');
+        modal.classList.add('active');
+
+        try {
+            // Load panels for dropdown
+            await this.populatePanelDropdowns();
+
+            // Fetch indicator data
+            const indicators = await window.adminService.getAllIndicators();
+            const indicator = indicators.find(i => i.id === indicatorId);
+
+            if (!indicator) {
+                window.showToast?.('Indicator not found.', 'error');
+                this.closeEditIndicatorModal();
+                return;
+            }
+
+            this.currentEditingIndicator = indicator;
+
+            // Populate form fields
+            document.getElementById('edit-indicator-id').value = indicator.id;
+            document.getElementById('edit-indicator-panel').value = indicator.panel_id || '';
+            document.getElementById('edit-indicator-title').value = indicator.name || '';
+            document.getElementById('edit-indicator-unit').value = indicator.unit || '';
+            document.getElementById('edit-indicator-formula-required').checked = indicator.formula_required || false;
+            document.getElementById('edit-indicator-code').value = indicator.code || '';
+            document.getElementById('edit-indicator-framework').value = indicator.primary_framework || '';
+            document.getElementById('edit-indicator-framework-version').value = indicator.framework_version || '';
+            document.getElementById('edit-indicator-description').value = indicator.description || '';
+            document.getElementById('edit-indicator-why-matters').value = indicator.why_it_matters || '';
+            document.getElementById('edit-indicator-impact').value = indicator.impact_level || '';
+            document.getElementById('edit-indicator-difficulty').value = indicator.difficulty_level || '';
+            document.getElementById('edit-indicator-estimated-time').value = indicator.estimated_time || '';
+            document.getElementById('edit-indicator-esg-class').value = indicator.esg_class || '';
+            document.getElementById('edit-indicator-validation-question').value = indicator.validation_question || '';
+            document.getElementById('edit-indicator-response-type').value = indicator.response_type || '';
+            document.getElementById('edit-indicator-tags').value = indicator.tags || '';
+            document.getElementById('edit-indicator-icon').value = indicator.icon || '';
+
+            // Set selected SDGs
+            const sdgsSelect = document.getElementById('edit-indicator-sdgs');
+            const relatedSdgs = indicator.related_sdgs || [];
+            Array.from(sdgsSelect.options).forEach(option => {
+                option.selected = relatedSdgs.includes(option.value);
+            });
+
+            // Update visibility toggle button
+            this.updateIndicatorVisibilityButtonState(indicator.is_active !== false);
+
+            setTimeout(() => document.getElementById('edit-indicator-title').focus(), 100);
+
+        } catch (error) {
+            console.error('Error loading indicator:', error);
+            window.showToast?.('Failed to load indicator data.', 'error');
+            this.closeEditIndicatorModal();
+        }
+    }
+
+    closeEditIndicatorModal() {
+        const backdrop = document.getElementById('edit-indicator-modal-backdrop');
+        const modal = document.getElementById('edit-indicator-modal');
+        
+        if (backdrop && modal) {
+            backdrop.classList.remove('active');
+            modal.classList.remove('active');
+            this.resetEditIndicatorForm();
+            this.currentEditingIndicator = null;
+        }
+    }
+
+    resetEditIndicatorForm() {
+        const form = document.getElementById('edit-indicator-form');
+        if (form) {
+            form.reset();
+            form.querySelectorAll('.form-input, .form-select, .form-textarea').forEach(field => {
+                field.classList.remove('error');
+            });
+            form.querySelectorAll('.form-error').forEach(error => {
+                error.textContent = '';
+            });
+        }
+    }
+
+    validateEditIndicatorForm() {
+        const requiredFields = [
+            { id: 'edit-indicator-panel', label: 'Panel' },
+            { id: 'edit-indicator-title', label: 'Indicator Title' }
+        ];
+
+        let isValid = true;
+
+        requiredFields.forEach(({ id, label }) => {
+            const field = document.getElementById(id);
+            if (!field || !field.value.trim()) {
+                this.showFieldError(id, `${label} is required`);
+                isValid = false;
+            } else {
+                this.clearFieldError(field);
+            }
+        });
+
+        return isValid;
+    }
+
+    async updateIndicator() {
+        if (!this.validateEditIndicatorForm()) {
+            return;
+        }
+
+        const updateBtn = document.getElementById('update-indicator-btn');
+        if (updateBtn) {
+            updateBtn.disabled = true;
+            updateBtn.innerHTML = '<span class="loading-spinner-sm" style="width: 16px; height: 16px; margin-right: var(--space-2);"></span> Updating...';
+        }
+
+        try {
+            const indicatorId = document.getElementById('edit-indicator-id').value;
+
+            const updates = {
+                panel_id: document.getElementById('edit-indicator-panel').value,
+                name: document.getElementById('edit-indicator-title').value.trim(),
+                unit: document.getElementById('edit-indicator-unit').value.trim() || null,
+                formula_required: document.getElementById('edit-indicator-formula-required').checked,
+                code: document.getElementById('edit-indicator-code').value.trim() || null,
+                primary_framework: document.getElementById('edit-indicator-framework').value || null,
+                framework_version: document.getElementById('edit-indicator-framework-version').value.trim() || null,
+                description: document.getElementById('edit-indicator-description').value.trim() || null,
+                why_it_matters: document.getElementById('edit-indicator-why-matters').value.trim() || null,
+                impact_level: document.getElementById('edit-indicator-impact').value || null,
+                difficulty_level: document.getElementById('edit-indicator-difficulty').value || null,
+                estimated_time: document.getElementById('edit-indicator-estimated-time').value.trim() || null,
+                esg_class: document.getElementById('edit-indicator-esg-class').value || null,
+                validation_question: document.getElementById('edit-indicator-validation-question').value.trim() || null,
+                response_type: document.getElementById('edit-indicator-response-type').value || null,
+                tags: document.getElementById('edit-indicator-tags').value.trim() || null,
+                icon: document.getElementById('edit-indicator-icon').value.trim() || null
+            };
+
+            // Get selected SDGs
+            const sdgsSelect = document.getElementById('edit-indicator-sdgs');
+            const relatedSdgs = Array.from(sdgsSelect.selectedOptions).map(opt => opt.value);
+            updates.related_sdgs = relatedSdgs.length > 0 ? relatedSdgs : null;
+
+            await window.adminService.updateIndicator(indicatorId, updates);
+
+            window.showToast?.('Indicator updated successfully!', 'success');
+            
+            this.closeEditIndicatorModal();
+
+            if (this.currentTab === 'indicators') {
+                await this.loadIndicators();
+            }
+
+        } catch (error) {
+            console.error('Error updating indicator:', error);
+            window.showToast?.('Failed to update indicator. Please try again.', 'error');
+        } finally {
+            if (updateBtn) {
+                updateBtn.disabled = false;
+                updateBtn.innerHTML = 'Update Indicator';
+            }
+        }
+    }
+
+    // =====================================================
+    // INDICATOR VISIBILITY TOGGLE
+    // =====================================================
+
+    updateIndicatorVisibilityButtonState(isActive) {
+        const btn = document.getElementById('toggle-indicator-visibility-btn');
+        const btnText = document.getElementById('indicator-visibility-btn-text');
+        const icon = document.getElementById('indicator-visibility-icon');
+
+        if (btn && btnText && icon) {
+            if (isActive) {
+                btnText.textContent = 'Hide';
+                btn.style.background = 'var(--gray-100)';
+                btn.style.color = 'var(--gray-700)';
+                icon.innerHTML = `
+                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                    <line x1="1" y1="1" x2="23" y2="23"></line>
+                `;
+            } else {
+                btnText.textContent = 'Show';
+                btn.style.background = 'var(--success-bg)';
+                btn.style.color = 'var(--success)';
+                icon.innerHTML = `
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                `;
+            }
+        }
+    }
+
+    async toggleIndicatorVisibility() {
+        if (!this.currentEditingIndicator) return;
+
+        const btn = document.getElementById('toggle-indicator-visibility-btn');
+        const btnText = document.getElementById('indicator-visibility-btn-text');
+        const currentState = this.currentEditingIndicator.is_active !== false;
+        const newState = !currentState;
+
+        if (btn) {
+            btn.disabled = true;
+            btnText.textContent = newState ? 'Showing...' : 'Hiding...';
+        }
+
+        try {
+            await window.adminService.updateIndicator(this.currentEditingIndicator.id, { is_active: newState });
+
+            this.currentEditingIndicator.is_active = newState;
+            this.updateIndicatorVisibilityButtonState(newState);
+
+            window.showToast?.(
+                newState ? 'Indicator is now visible!' : 'Indicator is now hidden.',
+                'success'
+            );
+
+            if (this.currentTab === 'indicators') {
+                await this.loadIndicators();
+            }
+
+        } catch (error) {
+            console.error('Error toggling indicator visibility:', error);
+            window.showToast?.('Failed to update indicator visibility.', 'error');
+        } finally {
+            if (btn) {
+                btn.disabled = false;
+                this.updateIndicatorVisibilityButtonState(this.currentEditingIndicator.is_active);
+            }
+        }
+    }
+
+    // =====================================================
+    // DELETE INDICATOR CONFIRMATION
+    // =====================================================
+
+    deleteCurrentIndicator() {
+        if (!this.currentEditingIndicator) return;
+        this.openDeleteIndicatorConfirmModal();
+    }
+
+    openDeleteIndicatorConfirmModal() {
+        const backdrop = document.getElementById('delete-indicator-confirm-modal-backdrop');
+        const modal = document.getElementById('delete-indicator-confirm-modal');
+        const nameEl = document.getElementById('delete-indicator-name');
+        const confirmInput = document.getElementById('delete-indicator-confirm-input');
+        const confirmBtn = document.getElementById('delete-indicator-confirm-btn');
+        const errorEl = document.getElementById('delete-indicator-confirm-error');
+
+        if (backdrop && modal && this.currentEditingIndicator) {
+            nameEl.textContent = this.currentEditingIndicator.name;
+            confirmInput.value = '';
+            confirmBtn.disabled = true;
+            errorEl.textContent = '';
+
+            backdrop.classList.add('active');
+            modal.classList.add('active');
+
+            setTimeout(() => confirmInput.focus(), 100);
+        }
+    }
+
+    closeDeleteIndicatorConfirmModal() {
+        const backdrop = document.getElementById('delete-indicator-confirm-modal-backdrop');
+        const modal = document.getElementById('delete-indicator-confirm-modal');
+        const confirmInput = document.getElementById('delete-indicator-confirm-input');
+
+        if (backdrop && modal) {
+            backdrop.classList.remove('active');
+            modal.classList.remove('active');
+            confirmInput.value = '';
+        }
+    }
+
+    async confirmDeleteIndicator() {
+        const confirmInput = document.getElementById('delete-indicator-confirm-input');
+        const confirmBtn = document.getElementById('delete-indicator-confirm-btn');
+        const errorEl = document.getElementById('delete-indicator-confirm-error');
+
+        if (confirmInput.value.toUpperCase() !== 'DELETE') {
+            errorEl.textContent = 'Please type DELETE to confirm';
+            return;
+        }
+
+        if (!this.currentEditingIndicator) return;
+
+        confirmBtn.disabled = true;
+        confirmBtn.innerHTML = '<span class="loading-spinner-sm" style="width: 16px; height: 16px; margin-right: var(--space-2);"></span> Deleting...';
+
+        try {
+            await window.adminService.permanentlyDeleteIndicator(this.currentEditingIndicator.id);
+
+            window.showToast?.('Indicator permanently deleted!', 'success');
+            
+            this.closeDeleteIndicatorConfirmModal();
+            this.closeEditIndicatorModal();
+
+            if (this.currentTab === 'indicators') {
+                await this.loadIndicators();
+            }
+
+        } catch (error) {
+            console.error('Error deleting indicator:', error);
+            window.showToast?.('Failed to delete indicator. Please try again.', 'error');
+            errorEl.textContent = 'Failed to delete. Please try again.';
+        } finally {
+            confirmBtn.disabled = false;
+            confirmBtn.innerHTML = `
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+                Delete Indicator
+            `;
         }
     }
 
