@@ -1243,11 +1243,17 @@ p {
 
 /* =====================================================
    DASHBOARD LAYOUT
+   
+   Header is sticky (not fixed), so content flows naturally.
+   Sidebar is fixed, needs offset from top equal to header height.
+   Main content right edge aligns with header-inner right edge.
    ===================================================== */
+
+/* Header height: 80px logo + 16px*2 padding = ~112px, rounded to 112px */
 .dashboard-layout {
     display: flex;
     min-height: 100vh;
-    padding-top: 100px; /* Adjusted for 80px logo + padding */
+    /* NO padding-top: header is sticky, not fixed, so it's in normal flow */
 }
 
 .sidebar {
@@ -1256,7 +1262,7 @@ p {
     border-right: 1px solid var(--gray-200);
     padding: var(--space-6);
     position: fixed;
-    top: 100px; /* Adjusted for 80px header */
+    top: 112px; /* Header height: 80px logo + 32px padding */
     left: 0;
     bottom: 0;
     overflow-y: auto;
@@ -1291,19 +1297,20 @@ p {
 .main-content {
     flex: 1;
     margin-left: 280px;
-    /* Align with header right edge (profile avatar) */
-    margin-right: max(24px, calc((100vw - 1280px) / 2));
-    padding: var(--space-8);
+    /* Align right edge with header-inner's right edge (1200px centered container) */
+    margin-right: max(20px, calc((100vw - 1200px) / 2));
+    /* Same horizontal padding as header-inner (20px) for content alignment with avatar */
+    padding: var(--space-6) 20px;
     background: var(--gray-50);
-    min-height: calc(100vh - 100px); /* Adjusted for 80px header */
+    min-height: calc(100vh - 112px); /* Header height */
     min-width: 0;
 }
 
+/* Dashboard container inherits alignment from main-content, no extra constraints needed */
 .dashboard-container {
-    max-width: 1200px;
     width: 100%;
-    margin: 0 auto;
-    padding: 0 var(--space-6);
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
