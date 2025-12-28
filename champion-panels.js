@@ -147,6 +147,9 @@ class ChampionPanels {
     }
 
     async startPanelReview(panelId, panelName) {
+        // Set current panel ID for invite peers modal
+        window.currentPanelId = panelId;
+        
         // Check if panel is already awaiting approval
         const status = this.getPanelReviewStatus(panelId);
         if (status === 'pending') {
