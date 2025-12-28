@@ -1245,26 +1245,25 @@ p {
    DASHBOARD LAYOUT
    
    Header is sticky (not fixed), so content flows naturally.
-   Sidebar is fixed, needs offset from top equal to header height.
-   Main content right edge aligns with header-inner right edge.
+   Sidebar uses sticky positioning to stay visible while scrolling.
+   Footer appears below both sidebar and main content.
    ===================================================== */
-
-/* Header height: 80px logo + 16px*2 padding = ~112px, rounded to 112px */
 .dashboard-layout {
     display: flex;
-    min-height: 100vh;
-    /* NO padding-top: header is sticky, not fixed, so it's in normal flow */
+    min-height: calc(100vh - 112px); /* Viewport minus header height */
+    align-items: flex-start; /* Allow sidebar and main to have different heights */
 }
 
 .sidebar {
     width: 280px;
+    min-width: 280px; /* Prevent shrinking */
     background: white;
     border-right: 1px solid var(--gray-200);
     padding: var(--space-6);
-    position: fixed;
-    top: 112px; /* Header height: 80px logo + 32px padding */
-    left: 0;
-    bottom: 0;
+    position: sticky;
+    top: 112px; /* Stick below header */
+    height: fit-content;
+    max-height: calc(100vh - 112px); /* Don't exceed viewport minus header */
     overflow-y: auto;
     z-index: var(--z-sticky);
 }
@@ -1296,8 +1295,8 @@ p {
 
 .main-content {
     flex: 1;
-    /* Sidebar width + gap (48px) */
-    margin-left: 500px;
+    /* Gap between sidebar and main content */
+    margin-left: 48px;
     /* Align right edge with header-inner's right edge (1200px centered container) */
     margin-right: max(20px, calc((100vw - 1200px) / 2));
     /* Same horizontal padding as header-inner (20px) for content alignment with avatar */
@@ -1698,8 +1697,15 @@ p {
     }
     
     .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        height: 100vh;
+        max-height: 100vh;
         transform: translateX(-100%);
         transition: transform var(--transition);
+        z-index: var(--z-modal);
     }
     
     .sidebar.active {
