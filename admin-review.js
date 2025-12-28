@@ -478,6 +478,7 @@ class AdminReviewPage {
                 this.closePanelReviewModal();
                 this.closeAddPanelModal();
                 this.closeEditPanelModal();
+                this.closeDeleteConfirmModal();
             }
         });
 
@@ -523,6 +524,39 @@ class AdminReviewPage {
             editPanelForm.querySelectorAll('input, select, textarea').forEach(field => {
                 field.addEventListener('input', () => this.clearFieldError(field));
                 field.addEventListener('change', () => this.clearFieldError(field));
+            });
+        }
+
+        // Delete Confirmation Modal
+        const deleteConfirmModalClose = document.getElementById('delete-confirm-modal-close');
+        const deleteConfirmModalBackdrop = document.getElementById('delete-confirm-modal-backdrop');
+        const deleteConfirmCancelBtn = document.getElementById('delete-confirm-cancel-btn');
+        const deleteConfirmBtn = document.getElementById('delete-confirm-btn');
+        const deleteConfirmInput = document.getElementById('delete-confirm-input');
+
+        if (deleteConfirmModalClose) {
+            deleteConfirmModalClose.addEventListener('click', () => this.closeDeleteConfirmModal());
+        }
+        if (deleteConfirmModalBackdrop) {
+            deleteConfirmModalBackdrop.addEventListener('click', (e) => {
+                if (e.target === deleteConfirmModalBackdrop) {
+                    this.closeDeleteConfirmModal();
+                }
+            });
+        }
+        if (deleteConfirmCancelBtn) {
+            deleteConfirmCancelBtn.addEventListener('click', () => this.closeDeleteConfirmModal());
+        }
+        if (deleteConfirmBtn) {
+            deleteConfirmBtn.addEventListener('click', () => this.confirmDeletePanel());
+        }
+        if (deleteConfirmInput) {
+            deleteConfirmInput.addEventListener('input', (e) => {
+                const isValid = e.target.value.toUpperCase() === 'DELETE';
+                deleteConfirmBtn.disabled = !isValid;
+                if (isValid) {
+                    document.getElementById('delete-confirm-error').textContent = '';
+                }
             });
         }
     }
@@ -1040,25 +1074,75 @@ class AdminReviewPage {
         }
     }
 
-    async deleteCurrentPanel() {
+    deleteCurrentPanel() {
         if (!this.currentEditingPanel) return;
 
-        const panelName = this.currentEditingPanel.name;
-        if (!confirm(`Are you sure you want to delete "${panelName}"? This will deactivate the panel and hide it from champions.`)) {
+        // Show confirmation modal
+        this.openDeleteConfirmModal();
+    }
+
+    openDeleteConfirmModal() {
+        const backdrop = document.getElementById('delete-confirm-modal-backdrop');
+        const modal = document.getElementById('delete-confirm-modal');
+        const panelNameEl = document.getElementById('delete-panel-name');
+        const confirmInput = document.getElementById('delete-confirm-input');
+        const confirmBtn = document.getElementById('delete-confirm-btn');
+        const errorEl = document.getElementById('delete-confirm-error');
+
+        if (backdrop && modal && this.currentEditingPanel) {
+            // Set panel name
+            panelNameEl.textContent = this.currentEditingPanel.name;
+            
+            // Reset input and button
+            confirmInput.value = '';
+            confirmBtn.disabled = true;
+            errorEl.textContent = '';
+
+            // Show modal
+            backdrop.classList.add('active');
+            modal.classList.add('active');
+
+            // Focus input
+            setTimeout(() => confirmInput.focus(), 100);
+        }
+    }
+
+    closeDeleteConfirmModal() {
+        const backdrop = document.getElementById('delete-confirm-modal-backdrop');
+        const modal = document.getElementById('delete-confirm-modal');
+        const confirmInput = document.getElementById('delete-confirm-input');
+
+        if (backdrop && modal) {
+            backdrop.classList.remove('active');
+            modal.classList.remove('active');
+            confirmInput.value = '';
+        }
+    }
+
+    async confirmDeletePanel() {
+        const confirmInput = document.getElementById('delete-confirm-input');
+        const confirmBtn = document.getElementById('delete-confirm-btn');
+        const errorEl = document.getElementById('delete-confirm-error');
+
+        // Validate input
+        if (confirmInput.value.toUpperCase() !== 'DELETE') {
+            errorEl.textContent = 'Please type DELETE to confirm';
             return;
         }
 
-        const deleteBtn = document.getElementById('delete-panel-btn');
-        if (deleteBtn) {
-            deleteBtn.disabled = true;
-            deleteBtn.innerHTML = '<span class="loading-spinner-sm" style="width: 16px; height: 16px; margin-right: var(--space-2);"></span> Deleting...';
-        }
+        if (!this.currentEditingPanel) return;
+
+        // Disable button and show loading
+        confirmBtn.disabled = true;
+        confirmBtn.innerHTML = '<span class="loading-spinner-sm" style="width: 16px; height: 16px; margin-right: var(--space-2);"></span> Deleting...';
 
         try {
             await window.adminService.deletePanel(this.currentEditingPanel.id);
 
             window.showToast?.('Panel deleted successfully!', 'success');
             
+            // Close both modals
+            this.closeDeleteConfirmModal();
             this.closeEditPanelModal();
 
             // Refresh panels list
@@ -1069,17 +1153,16 @@ class AdminReviewPage {
         } catch (error) {
             console.error('Error deleting panel:', error);
             window.showToast?.('Failed to delete panel. Please try again.', 'error');
+            errorEl.textContent = 'Failed to delete. Please try again.';
         } finally {
-            if (deleteBtn) {
-                deleteBtn.disabled = false;
-                deleteBtn.innerHTML = `
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="3 6 5 6 21 6"></polyline>
-                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                    </svg>
-                    Delete
-                `;
-            }
+            confirmBtn.disabled = false;
+            confirmBtn.innerHTML = `
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+                Delete Panel
+            `;
         }
     }
 

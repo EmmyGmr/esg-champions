@@ -550,6 +550,46 @@
         </div>
     </div>
 
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-backdrop" id="delete-confirm-modal-backdrop">
+        <div class="modal" id="delete-confirm-modal" style="max-width: 450px;">
+            <div class="modal-header" style="border-bottom: none; padding-bottom: 0;">
+                <h3 class="modal-title" style="color: var(--error);">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: var(--space-2);">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    Confirm Deletion
+                </h3>
+                <button class="modal-close" id="delete-confirm-modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom: var(--space-4);">
+                    You are about to delete the panel: <strong id="delete-panel-name"></strong>
+                </p>
+                <p class="text-secondary" style="margin-bottom: var(--space-4); font-size: var(--text-sm);">
+                    This action will deactivate the panel and hide it from all champions. This cannot be easily undone.
+                </p>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label">Type <strong>"DELETE"</strong> to confirm:</label>
+                    <input type="text" class="form-input" id="delete-confirm-input" placeholder="Type DELETE here" autocomplete="off">
+                    <span class="form-error" id="delete-confirm-error"></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="delete-confirm-cancel-btn">Cancel</button>
+                <button type="button" class="btn btn-error" id="delete-confirm-btn" disabled>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                    Delete Panel
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Compact Footer (Dashboard variant) -->
     <footer class="footer-compact">
         <div class="container">
