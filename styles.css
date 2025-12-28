@@ -1625,12 +1625,13 @@ p {
 /* =====================================================
    COMPACT FOOTER VARIANT (Dashboard pages)
    Slim, single-row footer for pages with sidebar layout
+   Full-width background, constrained inner content
    ===================================================== */
 .footer-compact {
     background: var(--gray-900);
     color: var(--gray-400);
     padding: var(--space-4) 0;
-    margin-left: 500px; /* Match main-content margin-left */
+    width: 100%; /* Full-bleed from left to right edge */
 }
 
 .footer-compact .container {
@@ -1639,6 +1640,7 @@ p {
     justify-content: space-between;
     flex-wrap: wrap;
     gap: var(--space-4);
+    /* Inner content uses standard container constraints */
 }
 
 .footer-compact-links {
@@ -1674,11 +1676,6 @@ p {
     color: var(--gray-500);
 }
 
-@media (max-width: 1024px) {
-    .footer-compact {
-        margin-left: 0;
-    }
-}
 
 @media (max-width: 768px) {
     .footer-compact .container {
