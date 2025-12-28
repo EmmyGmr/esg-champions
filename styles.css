@@ -131,11 +131,6 @@
     --z-modal: 500;
     --z-popover: 600;
     --z-tooltip: 700;
-
-    /* Layout - Single source of truth for header height */
-    --header-height: 100px; /* 80px logo + padding */
-    --container-max-width: 1200px;
-    --container-padding: 20px;
 }
 
 /* Dark Mode Variables */
@@ -247,9 +242,9 @@ p {
    ===================================================== */
 .container {
     width: 100%;
-    max-width: var(--container-max-width); /* STIF: 1200px max container width */
+    max-width: 1200px; /* STIF: 1200px max container width */
     margin: 0 auto;
-    padding: 0 var(--container-padding); /* STIF: 20px padding */
+    padding: 0 20px; /* STIF: 20px padding */
 }
 
 .container-sm { max-width: 640px; }
@@ -313,8 +308,8 @@ p {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--space-4) var(--container-padding);
-    max-width: var(--container-max-width);
+    padding: var(--space-4) 20px;
+    max-width: 1200px; /* STIF: 1200px max width */
     margin: 0 auto;
 }
 
@@ -1125,7 +1120,7 @@ p {
     min-height: 100vh;
     display: flex;
     align-items: center;
-    padding-top: var(--header-height); /* Uses header height variable */
+    padding-top: 100px; /* Adjusted for 80px logo */
     overflow: hidden;
 }
 
@@ -1252,7 +1247,7 @@ p {
 .dashboard-layout {
     display: flex;
     min-height: 100vh;
-    padding-top: var(--header-height); /* Single source of truth */
+    padding-top: 100px; /* Adjusted for 80px logo + padding */
 }
 
 .sidebar {
@@ -1261,7 +1256,7 @@ p {
     border-right: 1px solid var(--gray-200);
     padding: var(--space-6);
     position: fixed;
-    top: var(--header-height); /* Uses header height variable */
+    top: 100px; /* Adjusted for 80px header */
     left: 0;
     bottom: 0;
     overflow-y: auto;
@@ -1296,20 +1291,19 @@ p {
 .main-content {
     flex: 1;
     margin-left: 280px;
-    /* Align right edge with header-inner content (profile avatar) */
-    margin-right: max(var(--container-padding), calc((100vw - var(--container-max-width)) / 2));
-    padding: var(--space-6); /* Reduced padding, no extra top gap */
-    padding-top: var(--space-4); /* Minimal top padding for tight header alignment */
+    /* Align with header right edge (profile avatar) */
+    margin-right: max(24px, calc((100vw - 1280px) / 2));
+    padding: var(--space-8);
     background: var(--gray-50);
-    min-height: calc(100vh - var(--header-height));
+    min-height: calc(100vh - 100px); /* Adjusted for 80px header */
     min-width: 0;
 }
 
 .dashboard-container {
-    max-width: calc(var(--container-max-width) - 280px - var(--container-padding)); /* Account for sidebar */
+    max-width: 1200px;
     width: 100%;
-    margin: 0;
-    padding: 0;
+    margin: 0 auto;
+    padding: 0 var(--space-6);
     box-sizing: border-box;
 }
 
