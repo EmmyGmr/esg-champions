@@ -136,6 +136,21 @@ class DynamicNavigation {
                         </svg>
                         <span class="notification-badge hidden" id="notification-count">0</span>
                     </button>
+                    <div class="notifications-dropdown hidden" id="notifications-dropdown">
+                        <div class="notifications-header">
+                            <h4>Notifications</h4>
+                            <button class="btn btn-ghost btn-sm" id="mark-all-read-btn">Mark all read</button>
+                        </div>
+                        <div class="notifications-list" id="notifications-list">
+                            <div class="notifications-empty">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="2">
+                                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                                </svg>
+                                <p>No new notifications</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="nav-user-menu">
                     <button class="user-menu-trigger" id="user-menu-btn">
@@ -184,8 +199,11 @@ class DynamicNavigation {
             // Set up user dropdown
             this.setupUserDropdown();
             
-            // Load notification count
-            this.loadNotificationCount();
+            // Set up notifications dropdown
+            this.setupNotificationsDropdown();
+            
+            // Load notifications
+            this.loadNotifications();
         } else {
             navActions.innerHTML = `
                 <a href="/champion-login.html" class="btn btn-ghost">Login</a>
@@ -206,6 +224,8 @@ class DynamicNavigation {
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
             dropdown.classList.toggle('hidden');
+            // Close notifications dropdown when opening user menu
+            document.getElementById('notifications-dropdown')?.classList.add('hidden');
         });
 
         // Close on outside click
@@ -215,7 +235,244 @@ class DynamicNavigation {
     }
 
     /**
-     * Load notification count
+     * Set up notifications dropdown
+     */
+    setupNotificationsDropdown() {
+        const btn = document.getElementById('notifications-btn');
+        const dropdown = document.getElementById('notifications-dropdown');
+        const markAllReadBtn = document.getElementById('mark-all-read-btn');
+        
+        if (!btn || !dropdown) return;
+
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdown.classList.toggle('hidden');
+            // Close user dropdown when opening notifications
+            document.getElementById('user-dropdown')?.classList.add('hidden');
+        });
+
+        // Close on outside click
+        document.addEventListener('click', (e) => {
+            if (!dropdown.contains(e.target) && e.target !== btn) {
+                dropdown.classList.add('hidden');
+            }
+        });
+
+        // Close on Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                dropdown.classList.add('hidden');
+            }
+        });
+
+        // Mark all as read
+        if (markAllReadBtn) {
+            markAllReadBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.markAllNotificationsRead();
+            });
+        }
+    }
+
+    /**
+     * Load notifications and count
+     */
+    async loadNotifications() {
+        try {
+            let notifications = [];
+            
+            // Try to get notifications from database
+            try {
+                if (window.championDB && window.championDB.getNotifications) {
+                    notifications = await window.championDB.getNotifications();
+                }
+            } catch (dbError) {
+                console.warn('Could not load notifications from DB, using mock data');
+            }
+
+            // If no notifications from DB, use mock data for demo
+            if (!notifications || notifications.length === 0) {
+                notifications = this.getMockNotifications();
+            }
+
+            this.notifications = notifications;
+            this.renderNotifications(notifications);
+            this.updateNotificationBadge(notifications);
+            
+        } catch (error) {
+            console.error('Error loading notifications:', error);
+        }
+    }
+
+    /**
+     * Get mock notifications for demo
+     */
+    getMockNotifications() {
+        return [
+            {
+                id: '1',
+                type: 'review_approved',
+                title: 'Review Approved',
+                message: 'Your review for "Climate & GHG Emissions" panel has been approved!',
+                read: false,
+                created_at: new Date(Date.now() - 1000 * 60 * 30).toISOString() // 30 min ago
+            },
+            {
+                id: '2',
+                type: 'credits_earned',
+                title: 'Credits Earned',
+                message: 'You earned 10 credits for your approved review.',
+                read: false,
+                created_at: new Date(Date.now() - 1000 * 60 * 60).toISOString() // 1 hour ago
+            },
+            {
+                id: '3',
+                type: 'peer_joined',
+                title: 'Peer Joined',
+                message: 'John Doe accepted your invitation and joined STIF!',
+                read: false,
+                created_at: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString() // 2 hours ago
+            },
+            {
+                id: '4',
+                type: 'new_panel',
+                title: 'New Panel Available',
+                message: 'A new "Data Privacy & Cybersecurity" panel is now available for review.',
+                read: true,
+                created_at: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString() // 1 day ago
+            }
+        ];
+    }
+
+    /**
+     * Render notifications list
+     */
+    renderNotifications(notifications) {
+        const list = document.getElementById('notifications-list');
+        if (!list) return;
+
+        const unreadNotifications = notifications.filter(n => !n.read);
+        
+        if (notifications.length === 0) {
+            list.innerHTML = `
+                <div class="notifications-empty">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="2">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                    </svg>
+                    <p>No new notifications</p>
+                </div>
+            `;
+            return;
+        }
+
+        list.innerHTML = notifications.map(notification => `
+            <div class="notification-item ${notification.read ? 'read' : 'unread'}" data-id="${notification.id}" onclick="window.dynamicNav.markNotificationRead('${notification.id}')">
+                <div class="notification-icon ${this.getNotificationIconClass(notification.type)}">
+                    ${this.getNotificationIcon(notification.type)}
+                </div>
+                <div class="notification-content">
+                    <strong>${notification.title}</strong>
+                    <p>${notification.message}</p>
+                    <span class="notification-time">${this.formatTimeAgo(notification.created_at)}</span>
+                </div>
+                ${!notification.read ? '<span class="notification-unread-dot"></span>' : ''}
+            </div>
+        `).join('');
+    }
+
+    /**
+     * Update notification badge count
+     */
+    updateNotificationBadge(notifications) {
+        const badge = document.getElementById('notification-count');
+        if (!badge) return;
+
+        const unreadCount = notifications.filter(n => !n.read).length;
+        
+        if (unreadCount > 0) {
+            badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+            badge.classList.remove('hidden');
+        } else {
+            badge.classList.add('hidden');
+        }
+    }
+
+    /**
+     * Mark a notification as read
+     */
+    markNotificationRead(notificationId) {
+        const notification = this.notifications?.find(n => n.id === notificationId);
+        if (notification && !notification.read) {
+            notification.read = true;
+            this.renderNotifications(this.notifications);
+            this.updateNotificationBadge(this.notifications);
+            
+            // TODO: Update in database
+            // window.championDB.markNotificationRead(notificationId);
+        }
+    }
+
+    /**
+     * Mark all notifications as read
+     */
+    markAllNotificationsRead() {
+        if (this.notifications) {
+            this.notifications.forEach(n => n.read = true);
+            this.renderNotifications(this.notifications);
+            this.updateNotificationBadge(this.notifications);
+            
+            // TODO: Update in database
+            // window.championDB.markAllNotificationsRead();
+            
+            window.showToast?.('All notifications marked as read', 'success');
+        }
+    }
+
+    /**
+     * Get notification icon based on type
+     */
+    getNotificationIcon(type) {
+        const icons = {
+            review_approved: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>',
+            credits_earned: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"></path><line x1="12" y1="18" x2="12" y2="6"></line></svg>',
+            peer_joined: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>',
+            new_panel: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>',
+            default: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path></svg>'
+        };
+        return icons[type] || icons.default;
+    }
+
+    /**
+     * Get notification icon class based on type
+     */
+    getNotificationIconClass(type) {
+        const classes = {
+            review_approved: 'icon-success',
+            credits_earned: 'icon-warning',
+            peer_joined: 'icon-primary',
+            new_panel: 'icon-info'
+        };
+        return classes[type] || 'icon-default';
+    }
+
+    /**
+     * Format time ago
+     */
+    formatTimeAgo(dateString) {
+        const date = new Date(dateString);
+        const now = new Date();
+        const seconds = Math.floor((now - date) / 1000);
+
+        if (seconds < 60) return 'Just now';
+        if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+        if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
+        if (seconds < 604800) return `${Math.floor(seconds / 86400)}d ago`;
+        return date.toLocaleDateString();
+    }
+
+    /**
+     * Load notification count (legacy method)
      */
     async loadNotificationCount() {
         try {
@@ -405,6 +662,168 @@ dynamicNavStyles.textContent = `
     
     .user-dropdown-item.text-error:hover {
         background: var(--error-bg);
+    }
+    
+    /* Notifications Dropdown */
+    .notifications-dropdown {
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        background: white;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-xl);
+        width: 360px;
+        max-height: 480px;
+        z-index: var(--z-dropdown);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .notifications-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: var(--space-4);
+        border-bottom: 1px solid var(--gray-100);
+    }
+    
+    .notifications-header h4 {
+        margin: 0;
+        font-size: var(--text-base);
+        font-weight: 600;
+        color: var(--gray-900);
+    }
+    
+    .notifications-list {
+        flex: 1;
+        overflow-y: auto;
+        max-height: 400px;
+    }
+    
+    .notifications-empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: var(--space-8);
+        color: var(--gray-400);
+        text-align: center;
+    }
+    
+    .notifications-empty p {
+        margin-top: var(--space-2);
+        font-size: var(--text-sm);
+    }
+    
+    .notification-item {
+        display: flex;
+        gap: var(--space-3);
+        padding: var(--space-3) var(--space-4);
+        cursor: pointer;
+        transition: background var(--transition);
+        border-bottom: 1px solid var(--gray-50);
+        position: relative;
+    }
+    
+    .notification-item:hover {
+        background: var(--gray-50);
+    }
+    
+    .notification-item.unread {
+        background: var(--primary-50);
+    }
+    
+    .notification-item.unread:hover {
+        background: var(--primary-100);
+    }
+    
+    .notification-item.read {
+        opacity: 0.7;
+    }
+    
+    .notification-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: var(--radius-full);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+    
+    .notification-icon.icon-success {
+        background: var(--success-bg);
+        color: var(--success);
+    }
+    
+    .notification-icon.icon-warning {
+        background: var(--warning-bg);
+        color: var(--warning);
+    }
+    
+    .notification-icon.icon-primary {
+        background: var(--primary-100);
+        color: var(--primary-600);
+    }
+    
+    .notification-icon.icon-info {
+        background: var(--stif-blue-light, #e0f2fe);
+        color: var(--stif-blue);
+    }
+    
+    .notification-icon.icon-default {
+        background: var(--gray-100);
+        color: var(--gray-600);
+    }
+    
+    .notification-content {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    .notification-content strong {
+        display: block;
+        font-size: var(--text-sm);
+        font-weight: 600;
+        color: var(--gray-900);
+        margin-bottom: 2px;
+    }
+    
+    .notification-content p {
+        font-size: var(--text-sm);
+        color: var(--gray-600);
+        margin: 0;
+        line-height: 1.4;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    .notification-time {
+        font-size: var(--text-xs);
+        color: var(--gray-400);
+        margin-top: 4px;
+        display: block;
+    }
+    
+    .notification-unread-dot {
+        position: absolute;
+        top: 50%;
+        right: var(--space-3);
+        transform: translateY(-50%);
+        width: 8px;
+        height: 8px;
+        background: var(--stif-blue);
+        border-radius: var(--radius-full);
+    }
+    
+    @media (max-width: 480px) {
+        .notifications-dropdown {
+            width: calc(100vw - 32px);
+            right: -60px;
+        }
     }
 `;
 document.head.appendChild(dynamicNavStyles);
